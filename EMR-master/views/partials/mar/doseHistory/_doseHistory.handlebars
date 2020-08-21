@@ -1,0 +1,27 @@
+<div class="row" id="history">
+	<br>
+	<div class="card-panel blue darken-2 white-text" style="padding:5px; font-size: 18px">Dose History</div>
+	<table id="doseTable" class="order-column">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th class="dt-head-center">Time</th>
+				<th class="dt-head-center">Served By</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each history}}
+			<tr style="height: 50px">
+				<td class="dt-body-center">{{date}}</td>
+				<td class="dt-body-center">{{time}}</td>
+				<td class="dt-body-center">{{servedBy}}</td>
+				<td class="dt-body-center">
+					<a href="/master/editDoseHistory/{{_id}}" class="waves-effect btn-small green tooltipped" data-position="bottom" data-tooltip="Edit"><i class="material-icons white-text">edit</i></a>
+					<a href="/master/deleteDoseHistory/{{_id}}" class="waves-effect btn-small red tooltipped" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text">delete</i></a>
+				</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</div>

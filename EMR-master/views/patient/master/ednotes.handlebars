@@ -1,0 +1,295 @@
+{{!-- {{>common/_ednotes-scrollbar}} --}}
+{{> _add-btn}}
+
+{{#unless userType}}
+<form action="/master/save-ednotes/{{patient.patientID}}/{{patient.EDNotes_ID}}?_method=PUT" method="post" id="ednform">
+
+{{!-- <form action="/master/save-ednotes/{{patient.patientID}}/{{ednotes.EDNotes_ID}}?_method=PUT" method="post"> --}}
+
+{{else}}
+<!--form action for student -->
+<form action="/student/ednotes/{{recordID}}/{{patient.patientID}}" method="GET" id="ednform">
+{{/unless}}
+
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+    <div class="card blue lighten-5">
+        <div class="card-content">
+            <span class="card-title">
+                Emergency Notes
+            </span>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="dateArrivalED" style="font-size: larger;">Arrival date:</label>
+                    <br>
+                    <input type="date" name="dateArrivalED" id="dateArrivalED" value="{{ednotes.dateArrivalED}}" required>
+                </div>
+                
+                <div class="col s12 m4 14 input-field">
+                    <label for="arrivalTimeED" style="font-size: larger;">Arrival Time:</label>
+                    <br>
+                    <input type="time" name="arrivalTimeED" id="arrivalTimeED" value="{{ednotes.arrivalTimeED}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 14 input-field">
+                    <label for="referringFacilityED" style="font-size: larger;">Referring Facility:</label>
+                    <input type="text" name="referringFacilityED" id="referringFacilityED" value="{{ednotes.referringFacilityED}}" required>
+                    <!-- could this be related to admFrom for admitted from? -->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="modeOfArrED" style="font-size: larger;">Mode of Arrival: </label>
+                    <br>
+                    <br>
+                    <div style="font-size: 15px;">
+                        <label>
+                            <input name="modeOfArrED" type="radio" value="WalkingED" id="AMwalkingED" {{checked ednotes.modeOfArrED 'WalkingED'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Walking</span>
+                        </label>
+                        <label>
+                            <input name="modeOfArrED" type="radio" value="WheelchairED" id="AMwheelchairED" {{checked ednotes.modeOfArrED 'WheelchairED'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Wheel Chair</span>
+                        </label>
+                        <label>
+                            <input name="modeOfArrED" type="radio" value="TrolleyED" id="AMtrolleyED" {{checked ednotes.modeOfArrED 'TrolleyED'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Trolley</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="chiefcomplaintED" style="font-size: larger;">Chief Complaint:</label>
+                    <br>
+                    <br>
+                    <textarea type="text" class="form-control" id="chiefcomplaintED" name="chiefComplaintED" style="width: 250%; height: 200px; resize:none;" placeholder="Specify here" required>{{ednotes.chiefComplaintED}}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="carepriorArrED" style="font-size: larger;">Care prior to Arrival at ED:</label>
+                    <br>
+                    <br>
+                    <div style="font-size: 15px;" onclick="carepriorarrivaleventCheck()">
+                        <label>
+                            <input name="carepriorArrcheckED" type="radio" value="Yes" id="carepriorArrEDyes" {{checked ednotes.carepriorArrcheckED 'Yes'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Yes</span>
+                        </label>
+                        <label>
+                            <input name="carepriorArrcheckED" type="radio" value="No" id="carepriorArrEDno" {{checked ednotes.carepriorArrcheckED 'No'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">NKDA</span>
+                        </label>
+                    </div>
+                    <br>
+                    <textarea class="form-control" id="carepriorArrED" name="carepriorArrED" style="width: 250%; height: 200px; resize:none; display:none;" required>{{ednotes.carepriorArrED}}</textarea>
+                    <br>
+                    <div class="alert alert-warning" role="alert" style="display: none; font-weight: bold" id="carepriorArrinfoWarningED">
+                        Please specify above
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="pastHistoryED" style="font-size: larger;">Past History:</label>
+                    <br>
+                    {{!-- <input type="text" name="medicalHistoryED" id="medicalHistoryED" required> --}}
+                    <textarea class="form-control" id="pastHistoryED" name="pastHistoryED" placeholder="Specify here" style="width: 250%; height: 200px; resize:none;" required>{{ednotes.pastHistoryED}}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="drugallergycheckED" style="font-size: larger;">Drug Allergy: </label>
+                    <br>
+                    <div style="font-size: 15px;" onclick="drugallergyradioeventCheck()">
+                        <label>
+                            <input name="drugallergycheckED" type="radio" value="Yes" id="drugACEDyes" {{checked ednotes.drugallergycheckED 'Yes'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Yes</span>
+                        </label>
+                        <label>
+                            <input name="drugallergycheckED" type="radio" value="No" id="drugACEDno" {{checked ednotes.drugallergycheckED 'No'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">NKDA</span>
+                        </label>
+                    </div>
+                    <br>
+                    {{!-- <input type="text" placeholder="Specify here" id="allergyinfoED" style="display: none;"> --}}
+                    <textarea class="form-control" name="drugallergyspecifyED" id="drugallergyinfoED" placeholder="Specify any drug allergy here" style="width: 250%; height: 200px; resize:none; display:none;" required>{{ednotes.drugallergyspecifyED}}</textarea>
+                    <br>
+                    <div class="alert alert-warning" role="alert" style="display: none; font-weight: bold" id="drugallergyinfoWarningED">
+                        Please specify the drug allergy above
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="otherallergycheckED" style="font-size: larger;">Other Allergies: </label>
+                    <br>
+                    <div style="font-size: 15px;" onclick="otherallergyradioeventCheck()">
+                        <label>
+                            <input name="otherallergycheckED" type="radio" value="Yes" id="otherACEDyes" {{checked ednotes.otherallergycheckED 'Yes'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Yes</span>
+                        </label>
+                        <label>
+                            <input name="otherallergycheckED" type="radio" value="No" id="otherACEDno" {{checked ednotes.otherallergycheckED 'No'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">No</span>
+                        </label>
+                    </div>
+                    <br>
+                    <textarea name="otherallergyspecifyED" class="form-control" id="otherallergyinfoED" placeholder="Specify any other allergy here" style="width: 250%; height: 200px; resize:none; display:none;">{{ednotes.otherallergyspecifyED}}</textarea>
+                    <br>
+                    <div class="alert alert-warning" role="alert" style="display: none; font-weight: bold" id="otherallergyinfoWarningED">
+                        Please specify other allergies above
+                    </div>
+                </div>
+            </div>
+
+            <label for="vitalsignsInfoED" style="font-size: 25px;" class="col s12 m3 13">Vital Signs</label>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="tempinfoED" style="font-size: larger;">Temperature (&#8451;) :</label>
+                    <br>
+                    <input type="number" step=".01" name="tempinfoED" id="tempinfoED" class="col s12 m4 12" value="{{ednotes.tempinfoED}}" required>
+                </div>
+                <div class="col s12 m3 13 input-field">
+                    <label for="pulserateED" style="font-size: larger;">Pulse (bpm) :</label>
+                    <br>
+                    <input type="number" name="pulserateED" id="pulserateED" class="col s12 m4 12" value="{{ednotes.pulserateED}}" required>
+                </div>
+                <div class="col s12 m3 13 input-field">
+                    <label for="respiratoryrateED" style="font-size: larger;">Respiratory (bpm) :</label>
+                    <br>
+                    <input type="number" name="respiratoryrateED" id="respiratoryrateED" class="col s12 m4 12" value="{{ednotes.respiratoryrateED}}" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="bpratesbpED" style="font-size: larger;">BP (SBP) (mmHg) :</label>
+                    <br>
+                    <input type="number" name="bpratesbpED" id="bpratesbpED" class="col s12 m4 12" value="{{ednotes.bpratesbpED}}" required>
+                </div>
+                <div class="col s12 m3 13 input-field">
+                    <label for="bpratedbpED" style="font-size: larger;">BP (DBP) (mmHg) :</label>
+                    <br>
+                    <input type="number" name="bpratedbpED" id="bpratedbpED" class="col s12 m4 12" value="{{ednotes.bpratedbpED}}" required>
+                </div>
+                <div class="col s12 m3 13 input-field">
+                    <label for="spo2rateED" style="font-size: larger;">SpO2(%) :</label>
+                    <br>
+                    <input type="number" step=".01" name="spo2rateED" id="spo2rateED" class="col s12 m4 12" value="{{ednotes.spo2rateED}}" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="triagepriorityED" style="font-size: larger;">Triage Priority: </label>
+                    <br>
+                    <br>
+                    <div style="font-size: 15px;">
+                        <label>
+                            <input name="triagepriorityED" type="radio" value="1" id="triagepriorityED1" {{checked ednotes.triagepriorityED '1'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">1</span>
+                        </label>
+                        <label>
+                            <input name="triagepriorityED" type="radio" value="2" id="triagepriorityED2" {{checked ednotes.triagepriorityED '2'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">2</span>
+                        </label>
+                        <label>
+                            <input name="triagepriorityED" type="radio" value="3" id="triagepriorityED3" {{checked ednotes.triagepriorityED '3'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">3</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="initialAssessmentED" style="font-size: larger;">Initial Assessment: </label>
+                    <br>
+                    <br>
+                    <textarea class="form-control" name="initialAssessmentED" id="initialAssessmentED" value="initialassessment" placeholder="Specify here" style="width: 250%; height: 200px; resize:none;" required>{{ednotes.initialAssessmentED}}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="diagnosisED" style="font-size: larger;">Diagnosis: </label>
+                    <br>
+                    <br>
+                    <textarea class="form-control" name="diagnosisED" id="diagnosisED" value="diagnosis" placeholder="Specify here" style="width: 250%; height: 200px; resize:none;" required>{{ednotes.diagnosisED}}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="investigationED" style="font-size: larger;">Investigation: </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <div style="font-size: 15px;">
+                        <label>
+                            <input type="checkbox" id="xray" value="xray" name="investigationED" onclick="cbChecker()" {{resetExceptNone ednotes.investigationED 'xray' 'not'}}/>
+                            <span style="padding-left: 25px; padding-right: 10px">X-ray</span>
+                        </label>
+                        <textarea class="form-control" name="xrayspecs" id="xrayspecs" placeholder="Please specify here" style="width: 250%; height: 200px; resize:none; display:none;">{{ednotes.xrayspecs}}</textarea>
+                        <br>
+                        <label>
+                            <input type="checkbox" id="bloodtest" value="bloodtest" name="investigationED" onclick="cbChecker()" {{resetExceptNone ednotes.investigationED 'bloodtest' 'not'}}>
+                            <span style="padding-left: 25px; padding-right: 10px">Blood test</span>
+                        </label>
+                        <textarea class="form-control" name="bloodtestspecs" id="bloodtestspecs" placeholder="Please specify here" style="width: 250%; height: 200px; resize:none; display:none;">{{ednotes.bloodtestspecs}}</textarea>
+                        <br>
+                        <label>
+                            <input type="checkbox" id="bodyfluids" value="bodyfluids" name="investigationED" onclick="cbChecker()" {{resetExceptNone ednotes.investigationED 'bodyfluids' 'not'}} >
+                            <span style="padding-left: 25px; padding-right: 10px">Body fluids</span>
+                        </label>
+                        <textarea class="form-control" name="bodyfluidsspecs" id="bodyfluidsspecs" placeholder="Please specify here" style="width: 250%; height: 200px; resize:none; display:none;">{{ednotes.bodyfluidsspecs}}</textarea>
+                        <br>
+                        <label>
+                            <input type="checkbox" id="others" value="others" name="investigationED" onclick="cbChecker()"  {{resetExceptNone ednotes.investigationED 'others' 'not'}}>
+                            <span style="padding-left: 25px; padding-right: 10px">Others</span>
+                        </label>
+                        <textarea class="form-control" name="othersinvestigationspecs" id="othersinvestigationspecs" placeholder="Please specify here" style="width: 250%; height: 200px; resize:none; display:none;" value="othersinvestigationspecs">{{ednotes.othersinvestigationspecs}}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="treatmentorED" style="font-size: larger;">Treatment order: </label>
+                    <br>
+                    <br>
+                    <textarea class="form-control" name="treatmentordED" id="treatmentodED" placeholder="Specify here" style="width: 250%; height: 200px; resize:none;" required>{{ednotes.treatmentordED}}</textarea>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit" id="submitEDForm" style="width: 150px; float:right">Submit</button>
+    </div>
+</form>
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+    if("{{currentUserType}}" == "staff"){
+        $("#submitEDForm").show();
+    }else{
+        $("#submitEDForm").hide();
+        $("*", "#ednform").prop('disabled',true);
+    }
+
+</script>

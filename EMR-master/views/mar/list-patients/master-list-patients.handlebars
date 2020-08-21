@@ -1,0 +1,151 @@
+<h5>Medication Administration Records</h5>
+
+<div class="fixed-action-btn">
+	<a href="/master/add-mar-patient" class="btn-floating btn-large waves-effect waves-light green darken-3 tooltipped" data-position="left" data-tooltip="Add Patient"><i class="material-icons">add</i></a>
+</div>
+
+<br>
+<br>
+<div class='container-fluid'>
+    <div class='row'>
+		<div class="input-field col s1" style='margin:0'>
+			<select id="wardNo">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+			</select>
+			<label>Ward</label>
+		</div>
+    </div>
+</div>
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 18px">Medication Administration Master Records</div>
+<table id="marPatientMasterList" class="order-column">
+	<thead>
+		<tr>
+			<th>Bed</th>
+			<th class="dt-head-center">Family Name</th>
+			<th class="dt-head-center">Given Name</th>
+			<th class="dt-head-center">IC</th>
+			<th class="dt-head-center">Type</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each mPatients}}
+		<tr style="height: 50px">
+			<td>{{bed}}</td>
+			<td class="dt-body-center">{{familyName}}</td>
+			<td class="dt-body-center">{{givenName}}</td>
+			<td class="dt-body-center"><a href='/master/edit/{{patientID}}'>{{nric}}</a></td>
+			<td class="dt-body-center">EMR</td>
+			<td class="dt-body-center">
+				<a href="/master/edit/{{patientID}}" class="waves-effect btn-small green tooltipped" data-position="bottom" data-tooltip="Edit"><i class="material-icons white-text">edit</i></a>
+				<a href="/master/delete-mar-patient/{{_id}}" class="waves-effect btn-small red tooltipped disabled" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text">delete</i></a>
+				{{!-- <i href="" class="waves-effect btn-small red tooltipped" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text">delete</i></i> --}}
+				<a style="margin-left: 10px" class="waves-effect waves-light btn-small" href="/master/mar-management/{{patientID}}">MAR Management</a>
+				<a target="_blank" style="margin-left: 10px" class="waves-effect blue waves-light btn-small" href="/master/exportCase/{{patientID}}/{{givenName}}{{familyName}}_{{nric}}">Medication List</a>
+				<a target="_blank" style="margin-left: 10px" class="waves-effect purple waves-light btn-small" href="/master/viewBarcode/{{nric}}">Patient Barcode</a>
+			</td>
+		</tr>
+		{{/each}}
+
+		{{#each marMPatient}}
+		<tr style="height: 50px">
+			<td>{{bed}}</td>
+			<td class="dt-body-center">{{familyName}}</td>
+			<td class="dt-body-center">{{givenName}}</td>
+			<td class="dt-body-center"><a href='/master/edit-mar-patient/{{_id}}'>{{nric}}</a></td>
+			<td class="dt-body-center">MAR</td>
+			<td class="dt-body-center">
+				<a href="/master/edit-mar-patient/{{_id}}" class="waves-effect btn-small green tooltipped" data-position="bottom" data-tooltip="Edit"><i class="material-icons white-text">edit</i></a>
+				<a href="/master/delete-mar-patient/{{_id}}" class="waves-effect btn-small red tooltipped" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text">delete</i></a>
+				<a style="margin-left: 10px" class="waves-effect waves-light btn-small" href="/master/mar-management/{{patientId}}">MAR Management</a>
+				<a target="_blank" style="margin-left: 10px" class="waves-effect blue waves-light btn-small" href="/master/exportCase/{{patientId}}/{{givenName}}{{familyName}}_{{nric}}">Medication List</a>
+				<a target="_blank" style="margin-left: 10px" class="waves-effect purple waves-light btn-small" href="/master/viewBarcode/{{nric}}">Patient Barcode</a>
+			</td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
+
+<br>
+
+<div class="card-panel purple lighten-1 white-text" style="padding:5px; font-size: 18px">Medication Administration Student Records</div>
+<table id="marPatientStudentList" class="order-column">
+	<thead>
+		<tr>
+			<th>Bed</th>
+			<th class="dt-head-center">Family Name</th>
+			<th class="dt-head-center">Given Name</th>
+			<th class="dt-head-center">IC</th>
+			<th class="dt-head-center">By</th>
+		</tr>
+	</thead>
+			<tbody>
+				{{#each sPatients}}
+				<tr style="height: 50px">
+					<td>{{bed}}</td>
+					<td class="dt-body-center">{{familyName}}</td>
+					<td class="dt-body-center">{{givenName}}</td>
+					<td class="dt-body-center"><a href='#'>{{nric}}</a></td>
+					<td class="dt-body-center">{{creator}}</td>
+				</tr>
+				{{/each}}
+		</tbody>
+</table>
+
+<script>
+
+	paceOptions = {
+		ajax: false, // disabled
+		document: true,
+		eventLag: false, // disabled
+		elements: {
+			selectors: [ '#marPatientMasterList', '#marPatientStudentList']
+		}
+	};
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var options = document.querySelectorAll('option');
+    var instances = M.FormSelect.init(elems, options);
+
+	var tooltip = document.querySelectorAll('.tooltipped');
+    var toolTipInstances = M.Tooltip.init(tooltip, options);
+
+	let path = window.location.pathname;
+	let ward = path.split("/")[3];
+	$("#wardNo").val(ward);
+	$('#wardNo').formSelect();
+
+	$("#wardNo").change(function(){
+		let ward = $("#wardNo").val();
+		window.location.replace(`/master/list-mar-patients/${ward}`);
+	})
+
+	$('#marPatientMasterList').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "pagingType": "full_numbers",
+    });
+
+    $('#marPatientStudentList').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "pagingType": "full_numbers"
+    });
+});
+</script>
+<script src="/assets/pace/pace.min.js"></script>
+
+
+

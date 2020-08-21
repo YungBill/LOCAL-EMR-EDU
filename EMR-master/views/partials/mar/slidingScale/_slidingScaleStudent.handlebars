@@ -1,0 +1,22 @@
+<div class="row" id="scale">
+	<br>
+	<div class="card-panel blue darken-2 white-text" style="padding:5px; font-size: 18px">Sliding Scale</div>
+	<table id="slidingScale" class="order-column">
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th class="dt-head-center">BG (mmol/L)</th>
+				<th class="dt-head-center">Additional Insulin (units)</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each scale}}
+			<tr style="height: 50px">
+				<td>{{index}}</td>
+				<td class="dt-body-center">{{BG}}</td>
+				<td class="dt-body-center"><pre>{{additionalInsulin}}</pre></td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</div>

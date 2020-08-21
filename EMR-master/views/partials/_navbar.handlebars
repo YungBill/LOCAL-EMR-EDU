@@ -1,0 +1,737 @@
+
+<div class="navbar-fixed" style="z-index: 1000">
+	<nav class="transparent z-depth-0"> <!-- removed blue darken-4 -->
+		<div class="nav-wrapper">
+			<header class="main-header">
+
+				<!-- Hamburger menu-->
+				<!-- Show all the time with show-on-large. To position on right, use right class -->
+				<a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+					<i class="material-icons">menu</i>
+				</a>
+
+
+				<a class="goToHome" href="{{user.homeURL}}">EMR</a>
+
+				<!-- Beginning of navbar menu items-->
+				<ul class="right hide-on-med-and-down">
+					<li>
+						<a class="dropdown-trigger navmenu" href="#!" data-target="User">
+							{{!--<div style="color: #ff7726"></div>--}}
+							<i class="far fa-user" style="font-size: 17px; color: #ff7726 ">{{user.firstName}}</i>
+							<i class="fas fa-sort-down"></i>
+						</a>
+					</li>
+				</ul>
+				{{#if patient}}
+					<div id="patient-info">{{>common/_patient-info}}</div>
+
+					{{#if showMenu}}
+						<!-- Beginning of navbar menu items-->
+						<ul class="right">
+							{{#ifCond currentUserType 'staff'}}
+								{{#if studentFirstName}}
+								<li>
+									<div id="student-name">
+										<span class="studentName right">
+											BY: {{studentFirstName}}
+										</span>
+									</div>
+								</li>
+								{{/if}}
+							{{/ifCond}}
+							<li>
+								<a class="dropdown-trigger navmenu" href="#!" data-target="Patient">
+									Patient
+									<i class="fas fa-sort-down"></i>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-trigger navmenu" href="#!" data-target="Doctor">
+									Doctor
+									<i class="fas fa-sort-down"></i>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-trigger navmenu" href="#!" data-target="Nurse">
+									Nurse
+									<i class="fas fa-sort-down"></i>
+								</a>                                                                       
+							</li>
+							<li>
+								{{#unless userType}}
+								<a class= "navmenu" href="/master/mdp">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+								{{else}}
+								<a class= "navmenu" href="/student/mdp/{{recordID}}">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+								{{/unless}}
+							</li>
+							<li>
+								{{#unless userType}}
+								<a class="navmenu" href="/master/mar-management/{{patient.patientID}}">
+									MAR
+									<i class="fas fa-prescription-bottle-alt"></i>
+								</a>
+								{{else}}
+								<a class="navmenu" href="/student" >
+									MAR
+									<i class="fas fa-prescription-bottle-alt"></i>
+								</a>
+								{{/unless}}
+							</li>
+
+
+
+							{{!--
+							   {{#if user}}
+								   <li style="padding-top: 5px"><span id="welcome">{{user.firstName}}</span></li>
+							   {{else}}
+
+						   <li><a href="/auth/google">Login</a>/li>
+						   {{/if}}
+						   --}}
+							<!-- Icon link -->
+						</ul>
+					{{/if}}
+				{{/if}}
+
+				{{#if marpatient}}
+					<div id="marpatient-info">{{>common/_patient-info-mar}}</div>
+					{{#if serveMedication}}
+							<!-- Beginning of navbar menu items-->
+							<ul class="right">
+								{{#ifCond currentUserType 'staff'}}
+									{{#if studentFirstName}}
+									<li>
+										<div id="student-name">
+											<span class="studentName right">
+												BY: {{studentFirstName}}
+											</span>
+										</div>
+									</li>
+									{{/if}}
+								{{/ifCond}}
+								
+								{{#ifCond user.userType 'staff'}}
+								<li><a class="navmenu" href="/master/vital">Vital Signs</a></li>
+								{{else}}
+								<li><a class="navmenu" href="/student/vital/{{recordID}}">Vital Signs</a></li>
+								{{/ifCond}}
+
+								{{#ifCond user.userType 'staff'}}
+								<li><a class="navmenu" href="/master/io">IO Chart</a></li>
+								{{else}}
+								<li><a class="navmenu" href="/student/io/{{recordID}}">IO Chart</a></li>
+								{{/ifCond}}
+
+								{{#ifCond user.userType 'staff'}}
+								<li><a class="navmenu" href="/master/diabetic">Diabetic Chart</a></li>
+								{{else}}
+								<li><a class="navmenu" href="/student/diabetic/{{recordID}}">Diabetic Chart</a></li>
+								{{/ifCond}}
+
+								{{#ifCond user.userType 'staff'}}
+								<li><a class="navmenu" href="/master/doctor/orders">Orders</a></li>
+								{{else}}
+								<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
+								{{/ifCond}}
+							</ul>
+					{{/if}}
+
+
+					{{#if serveMedicationMAR}}
+						<ul class="right"  style="color: darkgray;">
+							<li><a class="navmenu" style="cursor: default;">Vital Sign</a></li>
+
+							<li><a class="navmenu" style="cursor: default;">IO Chart</a></li>
+
+							<li><a class="navmenu" style="cursor: default;">Diabetic Chart</a></li>
+
+							<li><a class="navmenu" style="cursor: default;">Orders</a></li>
+						</ul>
+					{{/if}}
+
+				{{/if}}
+			</header>
+			<!--</div>-->
+		</div>
+	</nav>
+</div>
+
+<!--
+	  Side Nav
+	  1. id to be same as <a class button-collapse.'s data-activates
+	  2. Add javascript to trigger: $('.button-collapse').sideNav();
+  -->
+<ul id="slide-out" class="sidenav" style="z-index: 1001">
+	<li>
+		<div class="user-view">
+			<div class="background">
+				<img src="/assets/img/ocean.jpg">
+			</div>
+			<span class="name white-text">{{user.firstName}}</span>
+			<span class="email white-text">{{user.email}}</span>
+		</div>
+	</li>
+
+	{{#if showMenu}}
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordion">
+			<li>
+				<a class="collapsible-header">Patient<i class="material-icons">arrow_drop_down</i></a>
+				<div class="collapsible-body">
+					<ul>
+						<li class="no-padding">
+							<ul class="collapsible collapsible-accordion">
+								<!--<li>
+									<a class="collapsible-header">Biographical Data<i class="material-icons">arrow_drop_down</i></a>
+									<div class="collapsible-body">
+										<ul>
+											<li><a href="#!">Second</a></li>
+											<li><a href="#!">Third</a></li>
+											<li><a href="#!">Fourth</a></li> 
+										</ul>
+									</div>
+								</li>-->
+								{{#unless userType}}
+								<li>
+									<a href="/master/edit/{{patient.patientID}}">Biographical Data</a>
+								</li>
+								{{else}}
+								<li>
+									<a href="/student/edit/{{recordID}}/{{patient.patientID}}">Biographical Data</a>
+								</li>
+								{{/unless}}
+								{{!--<li>
+									<a class="dropdown-trigger navmenu" href="#!" data-target="History">History
+										<i class="fas fa-sort-down"></i>
+									</a>
+								</li>--}}
+								<li class="divider"></li>
+								{{!-- <li><a href="#!">Contacts</a></li> --}}
+								<li class="lighter-fonts"><a href="#!">Home Meds</a></li>
+								<li class="lighter-fonts"><a href="#!">Consents and Authorities</a></li>
+								<li class="lighter-fonts"><a href="#!">Emergency Notes</a></li>
+								<li class="lighter-fonts"><a href="#!">Belongings</a></li>
+
+								{{#unless userType}}
+								<li>
+									<a href="/master/ednotes/{{patient.patientID}}">Emergency Notes</a>
+								</li>
+								{{else}}
+								<li>
+									<a href="/student/ednotes/{{recordID}}/{{patient.patientID}}">Emergency Notes</a>
+								</li> <!-- reserved for student ednotes -->
+								{{/unless}}
+
+								<li class="no-padding">
+								<ul class="collapsible collapsible-accordian">
+									<li>
+										<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Operation/Procedure</a>
+										<div class="collapsible-body">
+											<ul>
+												{{#unless userType}}
+													<li class="lighter-fonts"><a href="#">Pre-op/procedure checklist</a></li>
+													<li><a href="/master/opprocedure/post-op-procedure-notes/{{patient.patientID}}">Post-op/Procedure notes</a></li>
+												{{else}} {{!-- If usertype is master --}}
+													<li class="lighter-fonts"><a href="#">Pre-op/procedure checklist</a></li>
+													<li><a href="/student/opprocedure/post-op-procedure-notes/{{recordID}}/{{patient.patientID}}">Post-op/Procedure notes</a></li>
+												{{/unless}}
+											</ul>
+										</div>
+									</li>
+								</ul>
+								</li>
+								<li class="divider"></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</li>
+			</ul>
+		</li>
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordian">
+				<li>
+					<a class="collapsible-header">Doctor<i class="material-icons">arrow_drop_down</i></a>
+					<div class="collapsible-body">
+						<ul>
+							{{#unless userType}}
+							{{!-- <li><a href="#!">Notes</a></li> --}}
+							{{!-- <li class="divider"></li> --}}
+							<li><a href="/master/doctor/orders">Orders</a></li>
+							{{!-- <li><a href="#!">Orders Results</a></li> --}}
+							{{else}}
+							{{!-- <li><a href="#!">Notes</a></li> --}}
+							<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
+							{{!-- <li><a href="#!">Order Results</a></li> --}}
+							{{/unless}}
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordian">
+				<li>
+					<a class="collapsible-header">Nurse<i class="material-icons">arrow_drop_down</i></a>
+					<div class="collapsible-body">
+						<ul>
+							{{#unless userType}}
+							<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+							{{else}}
+							<li><a href="/student/show-nursing-assessment/{{recordID}}/{{patient.patientID}}">Assessment</a></li>
+							{{/unless}}
+							{{#unless userType}}
+							<li><a href="/master/HistoryTaking">History Taking</a></li>
+							{{else}}
+							<li><a href="/student/HistoryTaking/{{recordID}}">History Taking</a></li>
+							{{/unless}}
+							{{#unless userType}}
+							<li><a href="/master/CarePlan">Care Plan</a></li>
+							{{else}}
+							<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
+							{{/unless}}
+							{{#unless userType}}
+							<li><a href="/master/DischargePlanning">Discharge Planning</a></li>
+							{{else}}
+							<li><a href="/student/DischargePlanning/{{recordID}}">Discharge Planning</a></li>
+							{{/unless}} 
+							<li class="lighter-fonts"><a class="disabled" href="#!">Education</a></li>
+							<li class="divider"></li>
+							{{!-- start of dropdown for charts --}}
+							<li class="no-padding">
+								<ul class="collapsible collapsible-accordian">
+									<li>
+										<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Charts</a>
+										<div class="collapsible-body">
+											<ul>
+												{{#unless userType}}
+												<li><a href="/master/io">IO</a></li>
+												<li><a href="/master/vital">Vital</a></li>
+												<li><a href="/master/diabetic">Diabetic</a></li>
+												<li><a href="/master/clc">CLC</a></li> 
+												<li><a href="/master/neuro">Neurovascular</a></li> 
+												<li><a href="/master/FeedingRegime">Feeding Regime &#38; Schedule</a></li>
+												<li><a href="/master/ivfluid">IV Fluid Regime &#38; Schedule </a></li>
+												<li class="lighter-fonts"><a href="#!">Bladder Washout</a></li>
+												<li><a href="/master/fall">Morse Fall Scale</a></li>
+												<li><a href="/master/braden">Braden Scale</a></li>
+												<li><a href="/master/wound">Wound Chart</a></li>
+												<li><a href="/master/mna">Nutritional Assessment</a></li>
+												<li class="lighter-fonts"><a href="#!">Flowchart</a></li>
+												<li class="divider"></li>
+												{{else}} {{!-- If usertype is master --}}
+												<li><a href="/student/io/{{recordID}}">IO</a></li>
+												<li><a href="/student/vital/{{recordID}}">Vital</a></li>
+												<li><a href="/student/diabetic/{{recordID}}">Diabetic</a></li>
+												<li><a href="/student/clc/{{recordID}}">CLC</a></li>
+												<li><a href="/student/neuro/{{recordID}}">Neurovascular</a></li>
+												<li><a href="/student/FeedingRegime/{{recordID}}">Feeding Regime &#38; Schedule</a></li>
+												<li><a href="/student/ivfluid/{{recordID}}">IV Fluid Regime &#38; Schedule </a></li>
+												<li class="lighter-fonts"><a href="#!">Bladder Washout</a></li>
+												<li><a href="/student/fall/{{recordID}}">Morse Fall Scale</a></li>
+												<li><a href="/student/braden/{{recordID}}">Braden Scale</a></li>
+												<li><a href="/student/wound/{{recordID}}">Wound Chart</a></li>
+												<li><a href="/student/mna/{{recordID}}">Nutritional Assessment</a></li>
+												<li class="lighter-fonts"><a href="#!">Flowsheet</a></li>
+												<li class="divider"></li>
+												{{/unless}}
+											</ul>
+										</div>
+									</li>
+								</ul>
+							</li>
+							{{!--end of dropdown for charts  --}}
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li class="no-padding">
+			{{!-- <ul class="collapsible collapsible-accordian"> --}}
+				<li>
+					{{!-- <a class="collapsible-header">Doctor<i class="material-icons">arrow_drop_down</i></a>
+					<div class="collapsible-body"> --}}
+							{{#unless userType}}
+								<a class= "navmenu" href="/master/mdp">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+								{{else}}
+								<a class="navmenu" href="/student/mdp/{{recordID}}">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+							{{/unless}}
+					{{!-- </div> --}}
+				</li>
+			{{!-- </ul> --}}
+		</li>
+	{{/if}}
+	{{!-- <li class="no-padding">
+		<ul class="collapsible collapsible-accordian">
+			<li>
+				<a class="collapsible-header">
+					<i class="material-icons">arrow_drop_down</i>
+					<i class="far fa-user" style="font-size: 17px; color: #ff7726"></i>{{user.firstName}}
+				</a>
+				<div class="collapsible-body">
+					<ul>
+						<li><a href="#!">Settings</a></li>
+						<li>
+							<a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://localhost
+							/logout">Logout</a>
+						</li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</li> --}}
+
+{{#if serveMedication}}
+		<ul class="no-padding">
+			{{#ifCond user.userType 'staff'}}
+			<li><a class="navmenu" href="/master/vital#vitalSigns" target="_blank">Vital Signs</a></li>
+			{{else}}
+			<li><a class="navmenu" href="/student/vital/{{recordID}}#vitalSigns" target="_blank">Vital Signs</a></li>
+			{{/ifCond}}
+
+			{{#ifCond user.userType 'staff'}}
+			<li><a class="navmenu" href="/master/io#ioGraph" target="_blank">IO Chart</a></li>
+			{{else}}
+			<li><a class="navmenu" href="/student/io/{{recordID}}#ioGraph" target="_blank">IO Chart</a></li>
+			{{/ifCond}}
+
+			{{#ifCond user.userType 'staff'}}
+			<li><a class="navmenu" href="/master/diabetic" target="_blank">Diabetic Chart</a></li>
+			{{else}}
+			<li><a class="navmenu" href="/student/diabetic/{{recordID}}" target="_blank">Diabetic Chart</a></li>
+			{{/ifCond}}
+
+			{{#ifCond user.userType 'staff'}}
+			<li><a class="navmenu" href="/master/doctor/orders" target="_blank">Orders</a></li>
+			{{else}}
+			<li><a href="/student/doctor/orders/{{recordID}}" target="_blank">Orders</a></li>
+			{{/ifCond}}
+		</ul>
+	{{/if}}
+
+	{{#if serveMedicationMAR}}
+		<ul class="no-padding">
+			<li><a class="navmenu" >Vital Signs</a></li>
+
+			<li><a class="navmenu" >IO Chart</a></li>
+
+			<li><a class="navmenu" >Diabetic Chart</a></li>
+
+			<li><a class="navmenu" >Orders</a></li>
+		</ul>
+	{{/if}}
+
+
+			<ul>
+				{{#ifCond user.userType 'staff'}}
+				<li><a href="/master/list-mar-patients/1"><i class="fas fa-prescription-bottle-alt">{{patientID}}</i>MAR</a></li>
+				{{else}}
+				<li><a href="/student/list-mar-patients/1"><i class="fas fa-prescription-bottle-alt">{{patientID}}</i>MAR</a></li>
+				{{/ifCond}}
+				{{#ifCond user.userType 'staff'}}
+				<li><a href="/master/drug-list/#drugList"><i class="fas fa-capsules">{{patientID}}</i>Drug List</a></li>
+				{{/ifCond}}
+				<li><a href="#!"><i class="material-icons dp48">settings</i>Settings</a></li>
+
+				<ul class="collapsible collapsible-accordian">
+					{{#ifCond user.userType 'staff'}}
+					<li>
+						<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>System Management</a>
+						<div class="collapsible-body">
+							<ul>
+								<li class="no-padding">
+								<ul class="collapsible collapsible-accordian">
+									<li>
+										<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Course/Module management</a>
+										<div class="collapsible-body">
+											<ul>
+												<li class="divider"></li>
+												{{!-- <li><a href="#">CET</a></li>
+												<li><a href="#">PET</a></li>
+												<li><a href="#">Customised Course</a></li> --}}
+												<li><a href="/master/module-list"><i class="material-icons">assignment</i>Import Module List</a></li>
+												<li class="divider"></li>
+											</ul>
+										</div>
+									</li>
+								</ul>
+								</li>
+
+								
+
+							<li class="no-padding">
+							<ul class="collapsible collapsible-accordian">
+								<li>
+									<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>User & Group</a>
+									<div class="collapsible-body">
+										<ul>
+											<li class="divider"></li>
+											<li class="no-padding">
+											
+											<li><a href="/master/staff-list"><i class="material-icons">person</i>Import staff list</a></li>
+											<li><a href="/master/student-list"><i class="material-icons">people</i>Import student list</a></li>
+											<li><a href="/master/manual-list"><i class="material-icons">border_color</i>Manual</a></li>
+
+											<li><a href="/master/create-user-acct"><i class="material-icons">account_box</i>Create user account</a></li>
+											<li><a href="/master/enrol-user"><i class="material-icons">person_add</i>Enrol User</a></li>
+											<li class="lighter-fonts"><a href="#"><i class="material-icons">delete</i>Delete users</a></li>
+											<li class="divider"></li>
+											</li>
+										</ul>
+									
+								
+										{{!-- <ul>
+										<li class="divider"></li>
+										<li class="no-padding">
+										<ul class="collapsible collapsible-accordian">
+											<li>
+												<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Users</a>
+												<div class="collapsible-body">
+													<ul>
+													<li class="divider"></li>
+													<li class="no-padding">
+													<ul class="collapsible collapsible-accordian">
+														<li>
+															<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Manage user database</a>
+															<div class="collapsible-body">
+																<ul>
+																	<li><a href="/master/staff-list"><i class="material-icons">person</i>Import staff list</a></li>
+																	<li><a href="/master/student-list"><i class="material-icons">people</i>Import student list</a></li>
+																	<li><a href="/master/manual-list"><i class="material-icons">border_color</i>Manual</a></li>
+																	<li class="divider"></li>
+																</ul>
+															</div>
+														</li>
+													</ul>
+
+													<li class="lighter-fonts"><a href="#">Create user account</a></li>
+													<li class="lighter-fonts"><a href="#">Delete users</a></li>
+													<li class="divider"></li>
+
+													</ul>
+												</div>
+											</li>
+										</ul>
+										</li>
+											
+										<li>
+											<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Enrolment</a>
+										</li>
+
+										<li class="divider"></li>
+
+										</ul> --}}
+									</div>
+								</li>
+							</ul>
+							</li>
+							<li><a href="#"><i class="material-icons">account_balance</i>Case bank</a></li>
+							<li class="divider"></li>
+							</ul>
+						</div>
+					</li>
+					{{/ifCond}}
+				</ul>
+
+				<li>
+					
+					<a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://localhost
+					/logout"><i class="material-icons dp48">power_settings_new</i>Logout</a>
+					<!--** CHANGE HERE:-->
+					
+						<!--<a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://composition.sit.nyp.edu.sg
+						/logout"><i class="material-icons dp48">power_settings_new</i>Logout</a>-->
+					
+				</li>
+			</ul>
+			
+		
+</ul>
+
+
+<!-- Drop down menu items -->
+{{!-- Patient -> ... --}}
+<ul id="Patient" class="dropdown-content">
+	{{#unless userType}}
+	<li>
+		<a href="/master/edit/{{patient.patientID}}">Biographical Data</a>
+	</li>
+	{{else}}
+	<li>
+		<a href="/student/edit/{{recordID}}/{{patient.patientID}}">Biographical Data</a>
+	</li>
+	{{/unless}}
+	{{!-- <li><a href="/master/edit/{{patient.patientID}}">Biographical Data</a></li> --}}
+	{{!--<li>
+		<a class="dropdown-trigger navmenu" href="#!" data-target="History">History
+			<i class="fas fa-sort-down"></i>
+		</a>
+	</li>--}}
+	<li class="divider"></li>
+	{{!-- <li><a href="#!">Contacts</a></li> --}}
+	<li class="lighter-fonts"><a href="#!">Home Meds</a></li>
+	<li class="lighter-fonts"><a href="#!">Consents and Authorities</a></li>
+	<li class="lighter-fonts"><a href="#!">Emergency Notes</a></li>
+	<li class="lighter-fonts"><a href="#!">Belongings</a></li>
+
+	{{#unless userType}}
+	<li>
+		<a href="/master/ednotes/{{patient.patientID}}">Emergency Notes</a>
+	</li>
+	{{else}}
+	<li>
+		<a href="/student/ednotes/{{recordID}}/{{patient.patientID}}">Emergency Notes</a>
+	</li>
+	{{/unless}}
+	
+	<li class="divider"></li>
+	<li>
+		<a class="dropdown-trigger navmenu" href="#!" data-target="op">Operation
+			<i class="fas fa-sort-down"></i>
+		</a>
+	</li>
+</ul>
+
+<ul id="op" class="dropdown-content" style="overflow-y: auto !important;">
+	{{#unless userType}}
+		<li class="lighter-fonts"><a href="#">Pre-op/procedure checklist</a></li>
+		<li><a href="/master/opprocedure/post-op-procedure-notes/{{patient.patientID}}">Post-op/Procedure notes</a></li>
+	{{else}}
+		<li class="lighter-fonts"><a href="#">Pre-op/procedure checklist</a></li>
+		<li><a href="/student/opprocedure/post-op-procedure-notes/{{recordID}}/{{patient.patientID}}">Post-op/Procedure notes</a></li>
+	{{/unless}}
+</ul>
+
+{{!-- Patient -> History ->... --}}
+<ul id="History" class="dropdown-content">
+	<li><a href="#!">Medical</a></li>
+	<li><a href="#!">Surgical</a></li>
+	<li><a href="#!">Family</a></li>
+	<li><a href="#!">Social</a></li>
+	<li><a href="#!">Travel</a></li>
+</ul>
+
+
+<ul id="Doctor" class="dropdown-content">
+	{{#unless userType}}
+	{{!-- <li><a href="#!">Notes</a></li> --}}
+	<li class="divider"></li>
+	<li><a href="/master/doctor/orders">Orders</a></li>
+	{{!-- <li><a href="#!">Order Results</a></li> --}}
+	{{else}}
+	{{!-- <li><a href="#!">Notes</a></li> --}}
+	<li class="divider"></li>
+	<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
+	{{!-- <li><a href="#!">Order Results</a></li> --}}
+	{{/unless}}
+	{{!-- <li>
+		<a class="dropdown-trigger navmenu" href="#!" data-target="Order-entry">Order Entry
+			<i class="fas fa-sort-down"></i>
+		</a>
+	</li> --}}
+</ul>
+
+{{!-- Doctor -> Order entry ->... --}}
+{{!-- <ul id="Order-entry" class="dropdown-content">
+	<li><a href="#!">Pharmacy</a></li>
+	<li><a href="#!">Laboratory</a></li>
+	<li><a href="#!">Imaging</a></li>
+	<li><a href="#!">Therapies</a></li>
+	<li><a href="#!">Social Service</a></li>
+	<li><a href="#!">General Orders</a></li>
+</ul> --}}
+
+{{!-- Nurse -> ... --}}
+<ul id="Nurse" class="dropdown-content">
+	{{#unless userType}}
+	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+	{{else}}
+	<li><a href="/student/show-nursing-assessment/{{recordID}}/{{patient.patientID}}">Assessment</a></li>
+
+	{{/unless}}
+	{{#unless userType}}
+	<li><a href="/master/HistoryTaking">History Taking</a></li>
+	{{else}}
+	<li><a href="/student/HistoryTaking/{{recordID}}">History Taking</a></li>
+	{{/unless}}
+	{{#unless userType}}
+	<li><a href="/master/CarePlan">Care Plan</a></li>
+	{{else}}
+	<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
+	{{/unless}}
+	{{#unless userType}}
+	<li><a href="/master/DischargePlanning">Discharge Planning</a></li>
+	{{else}}
+	<li><a href="/student/DischargePlanning/{{recordID}}">Discharge Planning</a></li>
+	{{/unless}}
+	<li class="lighter-fonts"><a href="#!">Education</a></li>
+	<li class="divider"></li>
+	<li>
+		<a class="dropdown-trigger navmenu" href="#!" data-target="Charts">Charts
+			<i class="fas fa-sort-down"></i>
+		</a>
+	</li>
+</ul>
+
+{{!-- Nurse -> Charts ->... --}}
+<ul id="Charts" class="dropdown-content" style="overflow-y: auto !important;">
+	{{#unless userType}}
+	<li><a href="/master/io">IO</a></li>
+	<li><a href="/master/vital">Vital</a></li>
+	<li><a href="/master/diabetic">Diabetic</a></li>
+	<li><a href="/master/clc">CLC</a></li>
+	<li><a href="/master/neuro">Neurovascular</a></li>
+	<li><a href="/master/FeedingRegime">Feeding Regime &#38; Schedule</a></li>
+	<li><a href="/master/ivfluid">IV Fluid Regime &#38; Schedule </a></li>
+	<li class="lighter-fonts"><a href="#!">Bladder Washout</a></li>
+	<li><a href="/master/fall">Morse Fall Scale</a></li>
+	<li><a href="/master/braden">Braden Scale</a></li>
+	<li><a href="/master/mna">Nutritional Assessment</a></li>
+	<li><a href="/master/wound">Wound Chart</a></li>
+	<li class="lighter-fonts"><a href="#!">Flowsheet</a></li>
+	{{else}} {{!-- If usertype is master --}}
+	<li><a href="/student/io/{{recordID}}">IO</a></li>
+	<li><a href="/student/vital/{{recordID}}">Vital</a></li>
+	<li><a href="/student/diabetic/{{recordID}}">Diabetic</a></li>
+	<li><a href="/student/clc/{{recordID}}">CLC</a></li>
+	<li><a href="/student/neuro/{{recordID}}">Neurovascular</a></li>
+	<li><a href="/student/FeedingRegime/{{recordID}}">Feeding Regime &#38; Schedule</a></li>
+	<li><a href="/student/ivfluid/{{recordID}}">IV Fluid Regime &#38; Schedule </a></li>
+	<li class="lighter-fonts"><a href="#!">Bladder Washout</a></li>
+	<li><a href="/student/fall/{{recordID}}">Morse Fall Scale</a></li>
+	<li><a href="/student/braden/{{recordID}}">Braden Scale</a></li>
+	<li><a href="/student/mna/{{recordID}}">Nutritional Assessment</a></li>
+	<li><a href="/student/wound/{{recordID}}">Wound Chart</a></li>
+	<li class="lighter-fonts"><a href="#!">Flowsheet</a></li>
+	{{/unless}}
+</ul>
+
+
+<ul id="User" class="dropdown-content">
+	<li><a href="#!">Settings</a></li>
+	<li class="divider"></li>
+	<li><a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://localhost
+	/logout"
+	>Logout</a></li>
+	<!--
+	** CHANGE HERE:
+	-->
+	
+		<!--<li><a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://composition.sit.nyp.edu.sg
+		/logout"
+		>Logout</a></li>-->
+	
+</ul>

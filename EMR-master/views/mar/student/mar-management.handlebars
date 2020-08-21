@@ -1,0 +1,28 @@
+<div class="card purple lighten-5" id="test3">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="medication" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Medication</span>
+			<br>
+			{{#if marMedication}}
+			<hr>
+			{{#each marMedication}}
+			{{!-- ================================================================================================== --}}
+			{{#ifCond category "Nebulising Med"}}
+			<span class="blue-text darken-2">{{showArray nebList}}</span>
+			{{else}}
+			<h6><span class="blue-text darken-2">{{name}}</span></h6>
+			{{/ifCond}}
+			{{!-- {{#with marCase}} --}}
+				{{!-- <div class="col s2"> --}}
+					<br>
+					<a style="margin-left: 10px" class="waves-effect waves-light btn-small" href="/student/serve-medication/{{caseId}}">Serve Medication</a>
+				{{!-- </div> --}}
+				{{!-- {{/with}} --}}
+			<hr>
+			{{/each}}
+			{{else}}
+				No Medication Has been added yet.
+			{{/if}}
+        </div>
+	</div>
+</div>

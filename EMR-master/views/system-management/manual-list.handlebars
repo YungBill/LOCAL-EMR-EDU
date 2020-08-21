@@ -1,0 +1,181 @@
+{{!-- <form action="/master/upload-particulars" method="post">
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}"> --}}
+
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#staffInfoUpload">Upload to Staff List</a></li>
+            <li class="tab col s3"><a href="#studentInfoUpload">Upload to Student List</a></li>
+        </ul>
+    </div>
+</div>
+
+<form action="/master/upload-particulars-staff" method="post">
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+<div class="card grey lighten-4" id="staffInfoUpload">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Staff Information</span>
+            <span class="blue-text darken-3">Please update your original Excel/PDF if information is uploaded manually to prevent data loss</span>
+            <br>
+			{{!-- <div class="row">
+                <div class="input-field col s3">
+                    <select id="particularType">
+                        <option value="staff" class="choosen_type">Staff</option>
+                        <option value="student" class="choosen_type">Student</option>
+                    </select>
+                    <label>Select the user type to add the particulars for:</label>
+                </div>
+			</div> --}}
+                <div class="info" id="staff">
+                    <div class="col s4">
+                        <div class="row">
+                            <div class="col s12 m4 13 input-field">
+                                <label for="staffname">Name of Staff: </label>
+                                <br>
+                                <input type="text" name="staffname" id="staffname" value="{{uploadedInfo.staffname}}" >
+                            </div>
+
+                            <div class="col s12 m4 14 input-field">
+                                <label for="staffemail">Staff Email: </label>
+                                <br>
+                                <input type="text" name="staffemail" id="staffemail" value="{{uploadedInfo.staffemail}}" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <button class="btn btn-primary" type="submit" id="manualsubmitParticulars" style="width: 150px; float:right"><i class="material-icons right">send</i>Upload</button>
+    </div>
+</div>
+</form>
+
+<form action="/master/upload-particulars-student" method="post">
+<div class="card grey lighten-4" id="studentInfoUpload">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Student Information</span>
+            <span class="blue-text darken-3">Please update your original Excel/PDF if information is uploaded manually to prevent data loss</span>
+            <br>
+            <div class="info" id="student">
+                <div class="col s4">
+                    <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="studName">Name of Student: </label>
+                            <br>
+                            <input type="text" name="studName" id="studName" value="{{uploadedStudInfo.studName}}">
+                        </div>
+
+                        <div class="col s12 m4 14 input-field">
+                            <label for="studadmNo">Admin Number: </label>
+                            <br>
+                            <input type="text" name="studadmNo" id="studadmNo" value="{{uploadedStudInfo.studadmNo}}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="studemail">Student Email: </label>
+                            <br>
+                            <input type="text" name="studemail" id="studemail" value="{{uploadedStudInfo.studemail}}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="studmoduleCode">Module Code: </label>
+                            <br>
+                            <input type="text" name="studmoduleCode" id="studmoduleCode" value="{{uploadedStudInfo.studmoduleCode}}">
+                        </div>
+
+                        <div class="col s12 m4 14 input-field">
+                            <label for="studmoduleGroup">Module Group: </label>
+                            <br>
+                            <input type="text" name="studmoduleGroup" id="studmoduleGroup" value="{{uploadedStudInfo.studmoduleGroup}}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="schoolCode">School Code: </label>
+                            <br>
+                            <input type="text" name="schoolCode" id="schoolCode" value="{{uploadedStudInfo.schoolCode}}">
+                        </div>
+
+                        <div class="col s12 m4 14 input-field">
+                            <label for="studacadyearIntake">Academic Year Intake: </label>
+                            <br>
+                            <input type="text" name="studacadyearIntake" id="studacadyearIntake" value="{{uploadedStudInfo.studacadyearIntake}}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="sem">Semester: </label>
+                            <br>
+                            <input type="text" name="sem" id="sem" value="{{uploadedStudInfo.sem}}">
+                        </div>
+
+                        <div class="col s12 m4 14 input-field">
+                            <label for="studtutMentorGrp">Tutorial/Mentor Group: </label>
+                            <br>
+                            <input type="text" name="studtutMentorGrp" id="studtutMentorGrp" value="{{uploadedStudInfo.studtutMentorGrp}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+        <button class="btn btn-primary" type="submit" id="manualsubmitParticularsStudent" style="width: 150px; float:right"><i class="material-icons right">send</i>Upload</button>
+	</div>
+</div>
+</form>
+
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $('.tabs').tabs();
+    var elems = document.querySelectorAll('select');
+    {{!--     
+        var options = document.querySelectorAll('option');
+        var instances = M.FormSelect.init(elems, options);
+    --}}
+});
+
+$(document).ready(function(){
+    {{!-- //hides dropdown content
+    $(".info").hide();
+    
+    //unhides first option content
+    $("#staff").show();
+    
+    //listen to dropdown for change
+    $("#particularType").change(function(){
+        //rehide content on change
+        $('.info').hide();
+        //unhides current item
+        $('#'+$(this).val()).show();
+    }); --}}
+
+    {{!-- $("#manualsubmitParticulars").click(function () {
+        var selectedType = $('#particularType');
+        if (selectedType.val() === 'staff') {
+            //use data model for staff
+        }else{
+            if (selectedType.val() === 'student'){
+                // use data model for student
+            }
+        }
+    }); --}}
+});
+
+
+</script>
+
+<script src="/assets/pace/pace.min.js"></script>

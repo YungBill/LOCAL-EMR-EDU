@@ -1,0 +1,33 @@
+<div class="card grey lighten-4" id="addRow">
+	<div class="card-content" style="padding: 0px 24px;">
+        <form action="/master/addScaleRow/{{scaleId}}" method="POST">
+            <div id="scale" class="section scrollspy">
+                <div class="row">
+                    <div class="col s2">
+                        <span class="card-title blue-text darken-3">Add Row</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s5">
+                        <div class="input-field">
+                            <input type="text" id="BG" name="BG" required>
+                            <label class="" for="BG">BG (mmol/L)</label>
+                        </div>
+                    </div>
+                    <div class="col s5">
+                        <div class="input-field">
+                            <textarea class="materialize-textarea" id="add" name="add" required></textarea>
+                            <label class="" for="add">Additional Insulin (units)</label>
+                        </div>
+                    </div>
+                    <div class="col s2">
+                        <div class="input-field">
+                            <button type="submit" class="waves-effect btn-small blue form-btn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>

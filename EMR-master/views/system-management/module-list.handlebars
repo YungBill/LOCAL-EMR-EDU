@@ -1,0 +1,147 @@
+<div class="row">
+<div class="col s12" >
+	<ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#upload">Import Module List</a></li>
+		<li class="tab col s3"><a href="#moduleList">Module List</a></li>
+	</ul>
+</div>
+</div>
+
+
+<div class="card grey lighten-4" id="upload">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Import Module List (Excel File)</span>
+            <span class="blue-text darken-3">Please indicate any courses for CET, PET / Customized Courses in the Excel file before uploading</span>
+            <br>
+            <span class="blue-text darken-3">For upload to be successful, Excel file need to be named as "module list" inside a folder named as "modList" inside C drive</span>
+            <br>
+			<div class="row">
+                <form action="/master/uploadModuleExcelFile" id="form1" enctype="multipart/form-data" method="POST"> 
+                    <div class="col s4">
+                            <div class="file-field input-field">
+                                <div class="btn-small waves-effect waves-light">
+                                    <span>File</span>
+                                    <input type="file" name="myFile" required>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" id="file-text" type="text">
+                                    <label for="file-text">Upload will take a few moments to complete</label>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col s2">
+                        <br>
+                        <!-- Modal Trigger -->
+                        <a class="waves-effect waves-light btn btn-small blue modal-trigger" href="#modal1">Upload</a>
+                    </div>
+
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                        <h4>Confirm Upload</h4>
+                        <p>Upload will overwrite all existing module List</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="modal-close btn blue btn-small waves-effect waves-light">Cancel</button>
+                            <button type="submit" class="modal-close btn btn-small waves-effect waves-light" form="form1">Upload</button>
+                        </div>
+                    </div>
+
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="card blue lighten-5" id="moduleList">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Module List</span>
+            {{#if moduleList}}
+                <table id="moduleTable" class="striped compact">
+                    <thead>
+                        <tr>
+                            <th>
+                                Course Code
+                            </th>
+                            <th>
+                                Module Code
+                            </th>
+                            <th>
+                                Module/Course Description
+                            </th>
+                            <th>
+                                Module ID
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                {{#each moduleList}}
+                    <tr style="height: 50px">
+					<td>
+						{{courseCode}}
+					</td>
+					<td>
+						{{moduleCode}}
+					</td>
+                    <th>
+                        {{modulecourseDescriptn}}
+                    </th>
+                    <th>
+                        {{moduleID}}
+                    </th>
+				</tr>
+                {{/each}}
+                </tbody>
+                </table>
+            {{else}}
+            <a href="/master/module-list" class="btn-small waves-effect waves-light">Upload Module List</a>
+            {{/if}}
+		</div>
+	</div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $('.tabs').tabs();
+    var modalElems = document.querySelectorAll('.modal');
+    var modalInstances = M.Modal.init(modalElems);
+
+    $('#moduleTable').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "dom": 'Bfrtip',
+        "buttons": [
+            {'extend': 'excel',
+			'title': "module-list"
+			}, 
+			{'extend':'pdf',
+			'title': "module-list"
+			}
+        ],
+    });
+
+    $(".buttons-excel").addClass("btn btn-small waves-light");
+	$(".buttons-pdf").addClass("btn btn-small red waves-light");
+});
+
+
+{{#if moduleList}}
+paceOptions = {
+    ajax: false, // disabled
+    document: true,
+    eventLag: false, // disabled
+    elements: {
+        selectors: [ '#moduleTable']
+    }
+};
+{{/if}}
+
+
+
+</script>
+<script src="/assets/pace/pace.min.js"></script>

@@ -1,0 +1,280 @@
+{{>_add-btn}}
+{{#unless userType}}
+<form action="/master/save-postopprocedurenotes/{{patient.patientID}}/{{patient.PostOp_ProcedureNotesID}}?_method=PUT" method="POST" id="postopPN">
+{{else}}
+<form action="/student/opprocedure/post-op-procedure-notes/{{recordID}}/{{patient.patientID}}" method="GET" id="postopPN">
+{{/unless}}
+
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+    <div class="card blue lighten-5">
+        <div class="card-content">
+            <span class="card-title">
+                Operation Report
+            </span>
+
+            <br>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="diagnosisPostOpPN" style="font-size: larger;">Diagnosis: </label>
+                    <br>
+                    <input type="text" name="diagnosisPostOpPN" id="diagnosisPostOpPN" value="{{postopProNotes.diagnosisPostOpPN}}" required>
+                </div>
+
+                <div class="col s12 m4 14 input-field" style="font-size: larger;"> 
+                    <label for="surgeryopNature">Nature of Operation/Surgery: </label>
+                    <br>
+                    <input type="text" name="surgeryopNature" id="surgeryopNature" value="{{postopProNotes.surgeryopNature}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="priorityOp" style="font-size: larger;">Priority of Operation:  </label>
+                    <br>
+                    <br>
+                    <div style="font-size: 15px;">
+                        <label>
+                            <input name="priorityOp" type="radio" value="Critical" id="priorityOpcritical" {{checked postopProNotes.priorityOp 'Critical'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Critical</span>
+                        </label>
+                        <label>
+                            <input name="priorityOp" type="radio" value="Urgent" id="priorityOpurgent" {{checked postopProNotes.priorityOp 'Urgent'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Urgent</span>
+                        </label>
+                        <label>
+                            <input name="priorityOp" type="radio" value="Elective" id="priorityOpelective" {{checked postopProNotes.priorityOp 'Elective'}} required>
+                            <span style="padding-left: 25px; padding-right: 10px">Elective</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field"> 
+                    <label for="datesessionStarted" style="font-size: larger;">Date Session Started: </label>
+                    <br>
+                    <input type="date" name="datesessionStarted" id="datesessionStarted" value="{{postopProNotes.datesessionStarted}}" required>
+                </div>
+                
+                <div class="col s12 m4 14 input-field">
+                    <label for="timesessionStarted" style="font-size: larger;">Time Session Started: </label>
+                    <br>
+                    <input type="time" name="timesessionStarted" id="timesessionStarted" value="{{postopProNotes.timesessionStarted}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="datesessionCompleted" style="font-size: larger;">Date Session Completed:</label>
+                    <br>
+                    <input type="date" name="datesessionCompleted" id="datesessionCompleted" value="{{postopProNotes.datesessionCompleted}}" required>
+                </div>
+                
+                <div class="col s12 m4 14 input-field">
+                    <label for="timesessionCompleted" style="font-size: larger;">Time Session Completed: </label>
+                    <br>
+                    <input type="time" name="timesessionCompleted" id="timesessionCompleted" value="{{postopProNotes.timesessionCompleted}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="theatreNo" style="font-size: larger;">Theatre No: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="theatreNo" id="theatreNo" value="{{postopProNotes.theatreNo}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="anaesthesiaType" style="font-size: larger;">Type of Anaesthesia: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="anaesthesiaType" id="anaesthesiaType" value="{{postopProNotes.anaesthesiaType}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="anaesthesiaAlert" style="font-size: larger;">Anaesthesia Alert: </label>
+                    <br>
+                    <br>
+                    <textarea type="text" class="form-control" id="anaesthesiaAlert" name="anaesthesiaAlert" value="anaesthesiaalert" style="width: 250%; height: 200px; resize:none;" placeholder="Specify here" required>{{postopProNotes.anaesthesiaAlert}}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="principalAnaesthetist" style="font-size: larger;">Principal Anaesthetist: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="principalAnaesthetist" id="principalAnaesthetist" value="{{postopProNotes.principalAnaesthetist}}" required>
+                </div>
+
+                <div class="col s12 m4 14 input-field">
+                    <label for="assistant" style="font-size: larger;">Assistant: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="assistant" id="assistant" value="{{postopProNotes.assistant}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="surgicalCode" style="font-size: larger;">Surgical Code: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="surgicalCode" id="surgicalCode" value="{{postopProNotes.surgicalCode}}" required>
+                </div>
+
+                <div class="col s12 m4 14 input-field">
+                    <label for="surgicalTable" style="font-size: larger;">Surgical Table: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="surgicalTable" id="surgicalTable" value="{{postopProNotes.surgicalTable}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="firstSurgeon" style="font-size: larger;">First Surgeon: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="firstSurgeon" id="firstSurgeon" value="{{postopProNotes.firstSurgeon}}" required>
+                </div>
+
+                <div class="col s12 m4 14 input-field">
+                    <label for="secondSurgeon" style="font-size: larger;">Second Surgeon: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="secondSurgeon" id="secondSurgeon" value="{{postopProNotes.secondSurgeon}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                
+            </div>
+
+            <div class="row">
+                <div class="col s12 m4 13 input-field">
+                    <label for="assistant1" style="font-size: larger;">Assistant 1: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="assistant1" id="assistant1" value="{{postopProNotes.assistant1}}" required>
+                </div>
+
+                <div class="col s12 m4 14 input-field">
+                    <label for="assistant2" style="font-size: larger;">Assistant 2: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="assistant2" id="assistant2" value="{{postopProNotes.assistant2}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="findings" style="font-size: larger;">Findings: </label>
+                    <br>
+                    <br>
+                    <textarea class="form-control" name="findings" id="findings" value="findings"  placeholder="Specify here" style="width: 250%; height: 200px; resize:none;" required>{{postopProNotes.findings}}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="operativeProcedures" style="font-size: larger;">Operative procedures: </label>
+                    <br>
+                    <br>
+                    <textarea class="form-control" name="operativeProcedures" id="operativeProcedures" value="operativeprocedures" placeholder="Specify here" style="width: 250%; height: 200px; resize:none;" required>{{postopProNotes.operativeProcedures}}</textarea>
+                </div>
+            </div>
+
+            <label for="postopOrders" style="font-size: 25px;" class="col s12 m3 13">Post Operative Orders</label>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="transferlocatnPO" style="font-size: larger;">Transfer Location: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="transferlocatnPO" id="transferlocatnPO" value="{{postopProNotes.transferlocatnPO}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="monitoringPO" style="font-size: larger;">Monitoring: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="monitoringPO" id="monitoringPO" value="{{postopProNotes.monitoringPO}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="painManagement" style="font-size: larger;">Pain Management: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="painManagement" id="painManagement" value="{{postopProNotes.painManagement}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="oxygenTherapyPO" style="font-size: larger;">Oxygen Therapy: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="oxygenTherapyPO" id="oxygenTherapyPO" value="{{postopProNotes.oxygenTherapyPO}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="oralintakePO" style="font-size: larger;">Oral Intake: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="oralintakePO" id="oralintakePO" value="{{postopProNotes.oralintakePO}}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="activityPO" style="font-size: larger;">Activity: </label>
+                    <br>
+                    <br>
+                    <input type="text" name="activityPO" id="activityPO" value="{{postopProNotes.activityPO}}" required>
+                </div>
+            </div>
+
+            
+
+            <div class="row">
+                <div class="col s12 m3 13 input-field">
+                    <label for="otherinstructionsPO" style="font-size: larger;">Other Instructions: </label>
+                    <br>
+                    <br>
+                    <textarea class="form-control" name="otherinstructionsPO" id="otherinstructionsPO" value="otherinstructions" placeholder="Specify here" style="width: 250%; height: 200px; resize:none;" required>{{postopProNotes.otherinstructionsPO}}</textarea>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit" id="submitpostopPN" style="width: 150px; float:right">Submit</button>
+    </div>
+</form>
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+    if("{{currentUserType}}" == "staff"){
+        $("#submitpostopPN").show();
+    }else{
+        $("#submitpostopPN").hide();
+        $("*", "#postopPN").prop('disabled',true);
+    }
+
+</script>

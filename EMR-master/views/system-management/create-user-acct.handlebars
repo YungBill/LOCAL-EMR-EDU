@@ -1,0 +1,266 @@
+{{!-- <form action="/master/upload-particulars" method="post">
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}"> --}}
+
+
+{{!-- This is the development of the front end page only, for creating user account
+in sys management, while waiting for development NYP CNC with regards to 
+importation of SIMS --}}
+
+{{!-- Backend such as the database model and routing have not been added --}}
+
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#createStaffAcct">Staff Account Creation</a></li>
+            <li class="tab col s3"><a href="#createStudentAcct">Student Account Creation</a></li>
+        </ul>
+    </div>
+</div>
+
+<form action="#" method="post">
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+<div class="card grey lighten-4" id="createStaffAcct">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Staff Information</span>
+            <span class="blue-text darken-3">Please enter the following account details for creation and wait for account authorization to be completed</span>
+            <br>
+            <br>
+			
+                <div class="info" id="staff">
+                    <div class="col s4">
+                        {{!-- <div class="row">
+                            <div class="col s12 m4 13 input-field">
+                                <label for="creationEmailStaff">Email Address: </label>
+                                <br>
+                                <input type="text" name="creationEmailStaff" id="creationEmailStaff" value="" >
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12 m4 13 input-field">
+                                <label for="creationPWStaff">Password: </label>
+                                <br>
+                                <input type="password" name="creationPWStaff" id="creationPWStaff" value="" >
+                            </div>
+                        </div> --}}
+
+                    <div class="row">
+                        <div class="col s4">
+                            <label style="font-size: large;" for="creationEmailStaff">Email</label>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input type="text" name="creationEmailStaff" id="creationEmailStaff" value="">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {{!-- <div class="row">
+                        <div class="col s4">
+                            <label style="font-size: large;" for="creationPWStaff">Password</label>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">vpn_key</i>
+                                <input type="password" name="creationPWStaff" id="creationPWStaff" value="">
+                                
+                                <div id="pwstrengthbar">
+                                <p id="password-strength-text"></p>     
+                                    <meter max="4" id="password-strength-meter"></meter>
+                                </div>
+
+                                <p>
+                                    <label>
+                                        <input type="checkbox" class="#" onclick="showPW()"/>
+                                        <span>Show Password</span>
+                                    </label>
+                                </p>                            
+                            </div>
+                        </div>
+                    </div> --}}
+                    </div>
+                </div>
+        </div>
+        <button class="btn btn-primary" type="submit" id="#" style="width: 150px; float:right"><i class="material-icons right">send</i>Save</button>
+    </div>
+</div>
+</form>
+
+<form action="#" method="post">
+<div class="card grey lighten-4" id="createStudentAcct">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Student Information</span>
+            <span class="blue-text darken-3">Please enter the following account details for creation and wait for account authorization to be completed</span>
+            <br>
+            <br>
+            <div class="info" id="student">
+                <div class="col s4">
+                    {{!-- <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="creationEmailStud">Email Address: </label>
+                            <br>
+                            <input type="text" name="creationEmailStud" id="creationEmailStud" value="">
+                        </div>
+                    </div> --}}
+
+                    <div class="row">
+                        <div class="col s4">
+                            <label style="font-size: large;" for="creationEmailStud">Email</label>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input type="text" name="creationEmailStud" id="creationEmailStud" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{!-- password not needed --}}
+
+                    {{!-- <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="creationPWStudent">Password: </label>
+                            <br>
+                            <input type="password" name="creationPWStudent" id="creationPWStudent" value="">
+                        </div>
+                    </div> --}}
+
+                    {{!-- <div class="row">
+                        <div class="col s4">
+                            <label style="font-size: large;">Password</label>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">vpn_key</i>
+                                <input type="password" name="creationPWStudent" id="creationPWStudent" value="">
+
+                                <div id="pwstrengthbar">
+                                <p id="password-strength-text2"></p>     
+                                    <meter max="4" id="password-strength-meter2"></meter>
+                                </div>
+
+                                <p>
+                                    <label>
+                                        <input type="checkbox" class="#" onclick="showPW()"/>
+                                        <span>Show Password</span>
+                                    </label>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div> --}}
+                    
+                </div>
+            </div>
+		</div>
+        <button class="btn btn-primary" type="submit" id="#" style="width: 150px; float:right"><i class="material-icons right">send</i>Save</button>
+	</div>
+</div>
+</form>
+
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+
+{{!-- script for password strength --}}
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script> --}}
+
+<script>
+
+{{!-- var strength = {
+    0: "Worst",
+    1: "Bad",
+    2: "Weak",
+    3: "Good",
+    4: "Strong"
+} --}}
+
+{{!-- var passwordStaff = document.getElementById('creationPWStaff');
+var passwordStudent = document.getElementById('creationPWStudent');
+var meter = document.getElementById('password-strength-meter');
+var text = document.getElementById('password-strength-text');
+
+var meter2 = document.getElementById('password-strength-meter2');
+var text2 = document.getElementById('password-strength-text2'); --}}
+
+
+{{!-- passwordStaff.addEventListener('input', function() {
+    var val = passwordStaff.value;
+    var result = zxcvbn(val);
+
+    // Update the password strength meter
+    meter.value = result.score;
+
+    // Update the text indicator
+    if (val !== "") {
+        text.innerHTML = "Password Strength: " + strength[result.score]; 
+    } else {
+        text.innerHTML = "";
+    }
+
+});
+
+
+passwordStudent.addEventListener('input', function() {
+    var val = passwordStudent.value;
+    var result = zxcvbn(val);
+
+    // Update the password strength meter
+    meter2.value = result.score;
+
+    // Update the text indicator
+    if (val !== "") {
+        text2.innerHTML = "Password Strength: " + strength[result.score]; 
+    } else {
+        text2.innerHTML = "";
+    }
+
+}); --}}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    $('.tabs').tabs();
+    var elems = document.querySelectorAll('select');
+    {{!--     
+        var options = document.querySelectorAll('option');
+        var instances = M.FormSelect.init(elems, options);
+    --}}
+});
+
+{{!-- function showPW(){
+    var enteredPW = document.getElementById("creationPWStaff");
+    if(enteredPW.type === "password"){
+        enteredPW.type = "text";
+    }else{
+        enteredPW.type = "password";
+    }
+
+    var enteredPW = document.getElementById("creationPWStudent");
+    if(enteredPW.type === "password"){
+        enteredPW.type = "text";
+    }else{
+        enteredPW.type = "password";
+    }
+
+} --}}
+
+$(document).ready(function(){
+    {{!-- //hides dropdown content
+    $(".info").hide();
+    
+    //unhides first option content
+    $("#staff").show();
+    
+    //listen to dropdown for change
+    $("#particularType").change(function(){
+        //rehide content on change
+        $('.info').hide();
+        //unhides current item
+        $('#'+$(this).val()).show();
+    }); --}}
+
+});
+
+
+</script>
+
+<script src="/assets/pace/pace.min.js"></script>

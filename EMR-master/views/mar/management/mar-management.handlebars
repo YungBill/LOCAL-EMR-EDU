@@ -1,0 +1,228 @@
+<!-- CARD WITH TITLE -->
+<div class="row">
+<div class="col s12">
+	<ul class="tabs">
+		<li class="tab col s3"><a class="active" href="#caseDetails">Case Details</a></li>
+		<li class="tab col s3"><a href="#addMedication">Add Medication</a></li>
+		<li class="tab col s3"><a href="#medication">Medication</a></li>
+		{{!-- <li class="tab col s3"><a href="#medAdministration">Medication Administration</a></li> --}}
+	</ul>
+</div>
+</div>
+{{>mar/management/_case}}
+{{>mar/management/_add-medication}}
+{{>mar/management/_medication-list}}
+{{!-- {{>mar/management/_adminstration}} --}}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var selectElems = document.querySelectorAll('select');
+    var options = document.querySelectorAll('option');
+    var selectInstances = M.FormSelect.init(selectElems, options);
+
+	var modalElems = document.querySelectorAll('.modal');
+    var modalInstances = M.Modal.init(modalElems, options);
+
+	var tooltipElems = document.querySelectorAll('.tooltipped');
+    var tooltipInstances = M.Tooltip.init(tooltipElems, options);
+
+	$(".waves-effect.btn-small.tooltipped.form-btn").click(function(){
+		var verification = $(this).attr("data-value");
+		$(".waves-effect.btn-small.tooltipped.form-btn").attr("disabled", true);
+		$(this).attr("disabled", false);
+		$("#vStatus").val(verification);
+	})
+
+	$('.tabs').tabs();
+
+	$('#iRegBtn').click(function(){
+
+		$('#doseType').val("Irregular");
+
+		$('#regDose').hide();
+		$('#iRegDose').show();
+
+		$('#doseDate1').val('');
+
+		var cat = $('#category').val();
+		if(cat != "PRN" || cat!="Parenteral/Infusion"){
+			$('#iDoseDate1').attr('required', 'true');
+			$('#iDoseTime1').attr('required', 'true');
+		}
+
+		$('#doseDate1').removeAttr("required");
+		$('#doseTime1').removeAttr("required");
+
+		$('#doseTime1').val('');
+		$('#doseInterval').val('');
+		$('#doseNumber').val('');
+	});
+
+	$('#regBtn').click(function(){
+		$('#doseType').val("Regular");
+
+		$('#regDose').show();
+		$('#iRegDose').hide();
+		
+		var cat = $('#category').val();
+		if(cat != "PRN" || cat!="Parenteral/Infusion"){
+			$('#doseDate1').attr('required', 'true');
+			$('#doseTime1').attr("required", 'true');
+		}
+
+		$('#iDoseDate1').removeAttr("required");
+		$('#iDoseTime1').removeAttr('required');
+
+		$('#iDoseDate1').val('');
+		$('#iDoseTime1').val('');
+		$('#doseTime2').val('');
+		$('#doseTime3').val('');
+		$('#doseTime4').val('');
+		$('#doseTime5').val('');
+	});
+
+	$('#category').change(function(){
+		var cat = $(this).val();
+		if(cat == "Insulin"){
+			$("#doseParent").removeClass("hide");
+			$("#nebDoseParent").addClass("hide");
+			$("#scale").removeClass("hide");
+			$("#neb").addClass("hide");
+			$(".neb").addClass("hide");
+		}
+		else if(cat == "Nebulising Med"){
+			$("#doseParent").addClass("hide");
+			$("#nebDoseParent").removeClass("hide");
+
+			$("#neb").removeClass("hide");
+			$(".neb").removeClass("hide");
+			$("#scale").addClass("hide");
+		}
+		else if(cat == "PRN" || cat == "Parenteral/Infusion"){
+			$("#doseParent").removeClass("hide");
+			$("#nebDoseParent").addClass("hide");
+			$('#doseDate1').removeAttr("required");
+			$('#doseTime1').removeAttr("required");
+		}
+		else{
+			$("#doseParent").removeClass("hide");
+			$("#nebDoseParent").addClass("hide");
+			$("#scale").addClass("hide");
+			$("#neb").addClass("hide");
+			$(".neb").addClass("hide");
+		}
+	})
+
+	$('#scaleBtn').click(function(){
+		$("#dose").attr("disabled", true);
+		$("#dose").val("");
+	})
+
+	$('#status').change(function(){
+		var status = $(this).val();
+		
+		if(status!="Active"){
+			$("#cosignParent").addClass("hide");
+			$("#cosign").val("");
+		}
+		else{
+			$("#cosignParent").removeClass("hide");
+		}
+	})
+
+	var nebList = [];
+	$('#addNeb').click(function(){
+		var search = $("#search").val();
+		var dose = $("#nebDose").val();
+		nebList.push(`${search} : ${dose}`);
+		displayNeb();
+		$("#search").val("");
+		$("#nebDose").val("");
+	})
+
+	$('#removeNeb').click(function(){
+		$(":checkbox:checked").each(function () {
+			var index = $(this).attr("data-index");
+			remove(index);
+		});
+	})
+
+	function buildlist(){
+		var nList = "";
+		nebList.forEach(element=>{
+			nList+=`${element},`
+			$("#nebList").val(nList);
+		})
+	}
+
+	function remove(index) {
+		nebList.splice(index, 1);
+		var marked = $(`label[data-index='${index}']`);
+		displayNeb();
+	}
+
+	function displayNeb(){
+		$("#nebParent").empty();
+		nebList.forEach((element, index)=>{
+			var child = `<label data-index='${index}'><input type='checkbox' value='${element}' name="nebCB" data-index='${index}'/> <span style='padding-left: 25px; padding-right: 10px'>${element}</span></label>`
+			$("#nebParent").append(child);
+			buildlist();
+		})
+	}
+});
+
+	
+	document.addEventListener('DOMContentLoaded', () =>{
+		const caseDate = document.querySelector('#caseDate');
+
+		{{!-- Regular interval --}}
+		const doseDate1 = document.querySelector('#doseDate1');
+
+		{{!-- Irregular interval --}}
+		const iDoseDate1 = document.querySelector('#iDoseDate1');
+
+		{{!-- Regular interval --}}
+		const rDoseDate1 = document.querySelector('#rDoseDate1');
+		const rDoseDate2 = document.querySelector('#rDoseDate2');
+		const rDoseDate3 = document.querySelector('#rDoseDate3');
+
+		{{!-- Discontinuation --}}
+		const discDate = document.querySelector('#discDate');
+
+		M.Datepicker.init(caseDate, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(iDoseDate1, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(doseDate1, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(rDoseDate1, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(rDoseDate2, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(rDoseDate3, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(discDate, {
+			format: 'dd/mm/yyyy',
+		});
+
+	});
+
+</script>
+
+
+
+
+

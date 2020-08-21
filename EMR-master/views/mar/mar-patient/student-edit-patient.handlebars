@@ -1,0 +1,162 @@
+<!-- CARD WITH TITLE -->
+<div class="row">
+<div class="col s12">
+	<ul class="tabs">
+		<li class="tab col s3"><a href="#copyPatient">Copy Patient</a></li>
+	</ul>
+</div>
+</div>
+
+<div class="card grey lighten-4" id="copyPatient">
+	<div class="card-content">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Copy Patient</span>
+            <form action="/student/edit-mar-patient/{{patient._id}}" method="POST">
+                {{!-- ================================================================================================== --}}
+                <div class="row">
+                    {{!-- NRIC/Passport/FID --}}
+                    <div class="col s3 input-field">
+                        <i class="far fa-id-card prefix"></i>
+                        <input id="nric" type="text" class="validate" name="nric" value="{{patient.nric}}" disabled>
+                        <label for="nric">NRIC/Passport/FID</label>
+                    </div>
+
+                    {{!-- Family Name --}}
+                    <div class="col s3 input-field">
+                        <i class="fa fa-users prefix" aria-hidden="true"></i>
+                        <input id="familyName" type="text" class="validate" name="familyName" value="{{patient.familyName}}" disabled>
+                        <label for="familyName">Family Name</label>
+                    </div>
+
+                    {{!-- Given Name --}}
+                    <div class="col s3 input-field">
+                        <i class="material-icons prefix">account_box</i>
+                        <input id="givenName" type="text" class="validate" name="givenName" value="{{patient.givenName}}" disabled>
+                        <label for="givenName">Given Name</label>
+                    </div>
+
+                    <div class="col s1 input-field" style="padding-left: 40px">
+                        <i class="fa fa-venus-mars prefix" aria-hidden="true"></i>
+                    </div>
+                    <div class="col s2 input-field" style="padding-left: 0px">
+                        <p>
+                            <label>
+                                <input name="gender" type="radio" value="M" {{setRadioButton patient.gender "M"}} disabled/>
+                                <span>Male</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input name="gender" type="radio" value="F" {{setRadioButton patient.gender "F"}} disabled/>
+                                <span>Female</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+
+                {{!-- ================================================================================================== --}}
+                <div class="row">
+
+                    <div class="col s2">
+                        <div class="input-field">
+                            <i class="material-icons prefix">people</i>
+                            <input type="text" id="ethinicity" name="ethinicity" value="{{patient.ethinicity}}" required>
+                            <label class="" for="ethinicity">Ethinicity</label>
+                        </div>
+                    </div>
+
+                    {{!-- Date of birth --}}
+                    <div class="col s2 input-field">
+                        <i class="material-icons prefix">date_range</i>
+                        <input id="dob" class="datepicker" type="text" name="dob" required value="{{formatDate patient.dob 'DD/MM/YYYY'}}" required>
+                        <label for="dob">Date of Birth</label>
+                        <span class="helper-text">dd/mm/yyyy</span>
+                    </div>
+
+                    {{!-- Weight --}}
+                    <div class="col s2 input-field">
+                        <i class="material-icons prefix">assignment</i>
+                        <input id="weight" type="number" name="weight" placeholder="0.0" step="0.1" value="{{patient.weight}}" required>
+                        <label for="weight">Weight</label>
+                        <span class="helper-text">KG</span>
+                    </div>
+
+                    {{!-- Height --}}
+                    <div class="col s2 input-field">
+                        <i class="material-icons prefix">assessment</i>
+                        <input id="height" type="number" name="height" placeholder="0.0" step="0.1" value="{{patient.height}}" required>
+                        <label for="height">Height</label>
+                        <span class="helper-text">CM</span>
+                    </div>
+
+                    <div class="col s2">
+                        <div class="input-field">
+                            <i class="material-icons prefix">assignment_late</i>
+                            <input type="text" id="allergy" name="allergy" value="{{patient.allergy}}">
+                            <label class="" for="allergy">Allergy</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    {{!-- Ward number --}}
+                    <div class="col s12 m2 l2 input-field">
+                        <i class="material-icons prefix">local_hospital</i>
+                        <input id="ward" type="number" name="ward" value="{{patient.ward}}" required>
+                        <label for="ward">Ward</label>
+                    </div>
+
+                    {{!-- Bed number --}}
+                    <div class="col s12 m2 l2 input-field">
+                        <i class="material-icons prefix">airline_seat_individual_suite</i>
+                        <input id="bed" type="number" name="bed" value="{{patient.bed}}" required>
+                        <label for="bed">Bed</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s2">
+                        <div class="input-field">
+                            <i class="material-icons prefix">perm_contact_calendar</i>
+                            <input type="text" id="consultant" name="consultant" value="{{patient.consultant}}">
+                            <label class="" for="consultant">Consultant</label>
+                        </div>
+                    </div>
+                    <div class="col s3">
+                        <div class="input-field">
+                            <i class="material-icons prefix">healing</i>
+                            <input type="text" id="diagnosis" name="diagnosis" value="{{patient.diagnosis}}">
+                            <label class="" for="diagnosis">Diagnosis</label>
+                        </div>
+                    </div>
+                    <div class="col s3">
+                        <div class="input-field">
+                            <i class="material-icons prefix">history</i>
+                            <input type="text" id="history" name="history" value="{{patient.history}}">
+                            <label class="" for="history">Medical/Surgical History</label>
+                        </div>
+                    </div>
+
+                    <div class="col s1">
+                        <br>
+                        <button type="submit" class="blue btn-small waves-effect waves-light">Save</button>
+                    </div>
+                </div>
+            </form>
+
+		</div>
+	</div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () =>{
+        $('.tabs').tabs();
+		const dob = document.querySelector('#dob');
+
+		M.Datepicker.init(dob, {
+			maxDate: new Date(),
+			format: 'dd/mm/yyyy',
+		});
+	});
+
+</script>

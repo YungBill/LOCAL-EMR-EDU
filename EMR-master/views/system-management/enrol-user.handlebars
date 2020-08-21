@@ -1,0 +1,238 @@
+{{!-- <form action="/master/upload-particulars" method="post">
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}"> --}}
+
+
+{{!-- This is the development of the front end page only, for creating user account
+in sys management, while waiting for development NYP CNC with regards to 
+importation of SIMS --}}
+
+{{!-- Backend such as the database model and routing have not been added --}}
+
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#MLEnrol">Module Leader Enrolment</a></li>
+            <li class="tab col s3"><a href="#MTEnrol">Module Tutor Enrolment</a></li>
+            <li class="tab col s3"><a href="#StudentEnrol">Student Enrolment</a></li>
+        </ul>
+    </div>
+</div>
+
+<form action="#" method="post">
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+<div class="card grey lighten-4" id="MLEnrol">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Enrolment for Module Leader</span>
+            <span class="blue-text darken-3">Please enter the following account details for creation and wait for account authorization to be completed</span>
+            <br>
+            <br>
+                <div class="info" id="staff">
+                    <div class="col s4">
+                        {{!-- <div class="row">
+                            <div class="col s12 m4 13 input-field">
+                                <label for="modEnrol">Enrol to Module: </label>
+                                <br>
+                                <input type="text" name="modEnrol" id="modEnrol" value="" >
+                            </div>
+                        </div> --}}
+
+                        <div class="row">
+                            <div class="col s4">
+                                <label>Input the Module Code for enrolment:</label>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">class</i>
+                                    {{!-- <input type="text" id="autocomplete-input" class="autocomplete" placeholder="Specify Module Code here"> --}}
+                                    <input type="text" id="modcodeinput" class="modcodefield" placeholder="Specify module code here" list="moduleList">
+                                        <datalist id="moduleList">
+                                            {{#if moduleList}}
+                                                {{#each moduleList}}
+                                                    <option value="{{moduleCode}}">
+                                                {{/each}}
+                                                {{else}}
+                                                    <option value="None"></option>
+                                                {{/if}}
+                                        </datalist>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s4">
+                                <label>Single Enrolment:</label>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">account_box</i>
+                                    <input type="text" id="#" class="#" placeholder="Input Staff email here">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <button class="btn btn-primary" type="submit" id="#" style="width: 150px; float:right"><i class="material-icons right">send</i>Save</button>
+    </div>
+</div>
+</form>
+
+<form action="#" method="post">
+<input type="hidden" name="_method" value="PUT">
+<input type="hidden" name="_csrf" value="{{csrfToken}}">
+<div class="card grey lighten-4" id="MTEnrol">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Enrolment for Module Tutor</span>
+            <span class="blue-text darken-3">Please enter the following account details for creation and wait for account authorization to be completed</span>
+            <br>
+            <br>
+                <div class="info" id="staff">
+                    <div class="col s4">
+                        <div class="row">
+                            <div class="col s4">
+                                <label>Input the Module Code for enrolment:</label>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">class</i>
+                                    {{!-- <input type="text" id="autocomplete-input" class="autocomplete" placeholder="Specify Module Code here"> --}}
+                                    <input type="text" id="modcodeinput" class="modcodefield" placeholder="Specify module code here" list="moduleList">
+                                        <datalist id="moduleList">
+                                            {{#if moduleList}}
+                                                {{#each moduleList}}
+                                                    <option value="{{moduleCode}}">
+                                                {{/each}}
+                                                {{else}}
+                                                    <option value="None"></option>
+                                                {{/if}}
+                                        </datalist>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{!-- <div class="row">
+                            <div class="col s12 m4 13 input-field">
+                                <label for="singleEnrol">Single Enrolment: </label>
+                                <br>
+                                <input type="text" name="singleEnrol" id="singleEnrol" value="" >
+                            </div>
+                        </div> --}}
+
+                        <div class="row">
+                            <div class="col s4">
+                                <label>Single Enrolment:</label>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">account_box</i>
+                                    <input type="text" id="#" class="#" placeholder="Input Staff email here">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <button class="btn btn-primary" type="submit" id="#" style="width: 150px; float:right"><i class="material-icons right">send</i>Save</button>
+    </div>
+</div>
+</form>
+
+
+<form action="#" method="post">
+<div class="card grey lighten-4" id="StudentEnrol">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Enrolment for Student</span>
+            <span class="blue-text darken-3">Please enter the following account details for creation and wait for account authorization to be completed</span>
+            <br>
+            <br>
+            <div class="info" id="student">
+                <div class="col s4">
+                    {{!-- <div class="row">
+                        <div class="col s12 m4 13 input-field">
+                            <label for="studEmailEnrol">User Email: </label>
+                            <br>
+                            <input type="text" name="studEmailEnrol" id="studEmailEnrol" value="">
+                        </div>
+                    </div> --}}
+
+                    <div class="row">
+                        <div class="col s4">
+                            <label>Input student email:</label>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input type="text" id="#" class="#" placeholder="Input Student email here">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s4">
+                            <label>Input the Module Code for enrolment:</label>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">class</i>
+                                {{!-- <input type="text" id="autocomplete-input" class="autocomplete" placeholder="Specify Module Code here"> --}}
+                                <input type="text" id="modcodeinput" class="modcodefield" placeholder="Specify module code here" list="moduleList">
+                                <datalist id="moduleList">
+                                    {{#if moduleList}}
+                                        {{#each moduleList}}
+                                            <option value="{{moduleCode}}">
+                                        {{/each}}
+                                        {{else}}
+                                            <option value="None"></option>
+                                        {{/if}}
+                                </datalist>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+        <button class="btn btn-primary" type="submit" id="#" style="width: 150px; float:right"><i class="material-icons right">send</i>Save</button>
+	</div>
+</div>
+</form>
+
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+
+{{!-- <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js">
+</script> --}}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $('.tabs').tabs();
+    var elems = document.querySelectorAll('select');
+    {{!--     
+        var options = document.querySelectorAll('option');
+        var instances = M.FormSelect.init(elems, options);
+    --}}
+});
+
+$(document).ready(function(){
+    {{!-- //hides dropdown content
+    $(".info").hide();
+    
+    //unhides first option content
+    $("#staff").show();
+    
+    //listen to dropdown for change
+    $("#particularType").change(function(){
+        //rehide content on change
+        $('.info').hide();
+        //unhides current item
+        $('#'+$(this).val()).show();
+    }); --}}
+
+    {{!-- materialize css autocomplete feature, planning to integrate database
+    with module code as data --}}
+    {{!-- $('input.autocomplete').autocomplete({
+    data: {
+    "HS1234": null,
+    "HS5678": null,
+    "HS1212": null}
+    }); --}}
+});
+
+</script>
+
+<script src="/assets/pace/pace.min.js"></script>

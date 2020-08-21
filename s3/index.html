@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+  <head>
+    <title>EMR Pipeline</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.2/js/dataTables.colReorder.min.js"></script>
+
+  </head>
+  <body>
+
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">&nbsp;EMR Pipeline</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li id="commitId" class="white-text"></li>
+          <li class="white-text"><a href="http://184723g-emr.s3-website-ap-southeast-1.amazonaws.com">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class="row">
+      <br>
+      <br>
+      <div class="col s10 offset-s1">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">EMR Pipeline Repository&nbsp;&nbsp;&nbsp;<button class="waves-effect blue waves-light btn-small" data-action="test" disabled>Test & Deploy</button> <button class="waves-effect waves-light red btn-small" data-action="deploy" disabled>Deploy</button></span>
+            <table id="files" class="display hover" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Files Changed</th>
+                      <th>Change Type</th>
+                  </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s10 offset-s1">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Pipeline Event History&nbsp;&nbsp;&nbsp;<a target="_blank" style="font-weight:450 !important" href="https://ap-southeast-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/EMR-PIPELINE-TESTS/view?region=ap-southeast-1" class="waves-light waves-effect btn-small blue">Test & Deployment Pipeline</a> <a target="_blank" style="font-weight:450 !important" href="https://ap-southeast-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/EMR-PIPELINE-SKIP-TESTS/view?region=ap-southeast-1" class="waves-light waves-effect btn-small red">Deployment Pipeline</a></span>
+            <table id="status" class="display hover" style="width:100%">
+              <thead>
+                  <tr>
+                      <th>Time</th>
+                      <th>Pipeline</th>
+                      <th>Stage</th>
+                      <th>Action</th>
+                      <th>State</th>
+                      <th>Execution Id</th>
+                  </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+
+  <script>
+    $(document).ready(function(){
+      var commitId = "";
+
+      const url = new URLSearchParams(window.location.search);
+      const apiKey = url.get('key');
+
+      $.ajax({
+        type: "GET",
+        headers: {"x-api-key": apiKey},
+        url: "https://gksv5zanm6.execute-api.ap-southeast-1.amazonaws.com/S3",
+        success: function (data) {
+          try{
+            let newData = JSON.parse(data.body);
+            
+            commitId = newData.commitId;
+            $("#commitId").text(`CommitId: ${commitId}`);
+
+            let changes = JSON.parse(newData.changes);
+            
+            var trHTML = '';
+
+            for (var key in changes) {
+                if(changes[key] == "M"){
+                  trHTML += `<tr class='yellow-text text-darken-3'><td style='background-color:white !important'>` + key + `</td><td style='background-color:white !important'>` + changes[key] + ` (Modified)</td></tr>`;
+                }
+                else if(changes[key] == "D"){
+                  trHTML += `<tr class='red-text text-darken-3'><td style='background-color:white !important'>` + key + `</td><td style='background-color:white !important'>` + changes[key] + ` (Deleted)</td></tr>`;
+                }
+                else if(changes[key] == "A"){
+                  trHTML += `<tr class='green-text text-darken-3'><td style='background-color:white !important'>` + key + `</td><td style='background-color:white !important'>` + changes[key] + ` (Added)</td></tr>`;
+                }
+                else{
+                  trHTML += `<tr class='blue-text text-darken-3'><td style='background-color:white !important'>` + key + `</td><td style='background-color:white !important'>` + changes[key] + ` (Untracked)</td></tr>`;
+                }
+            }
+
+            $(":button.btn-small").removeAttr("disabled");
+
+            $('#files tbody').append(trHTML);
+            $('#files').DataTable({
+              "paging": true,
+              "lengthChange": false
+            });
+          }
+          catch{
+            $(":button.btn-small").attr("disabled", "true");
+            $("#commitId").text(`No changes detected`);
+          }
+        }
+      });
+
+      $.ajax({
+        type: "GET",
+        headers: {"x-api-key": apiKey},
+        url: "https://gksv5zanm6.execute-api.ap-southeast-1.amazonaws.com/S3/status",
+        success: function (data) {
+            let newData = JSON.parse(data.body);
+
+            var trHTML = "";
+
+            newData.forEach(element => {
+              let tdHTML = "";
+              tdHTML += `<td style='background-color:white !important'>` + element["time"] + `</td>`
+              tdHTML += `<td style='background-color:white !important'>` + element["pipeline"] + `</td>`
+              tdHTML += `<td style='background-color:white !important'>` + element["stage"] + `</td>`
+              tdHTML += `<td style='background-color:white !important'>` + element["action"] + `</td>`
+              tdHTML += `<td style='background-color:white !important'>` + element["state"] + `</td>`
+              tdHTML += `<td style='background-color:white !important'>` + element["executionId"] + `</td>`
+              
+              if(element["state"] == "STARTED"){
+                trHTML += `<tr class='blue-text text-darken-3'>${tdHTML}</tr>`
+              }
+              else if(element["state"] == "SUCCEEDED"){
+                trHTML += `<tr class='green-text text-darken-3'>${tdHTML}</tr>`
+              }
+              else{
+                trHTML += `<tr class='red-text text-darken-3'>${tdHTML}</tr>`
+              }
+            });
+        
+            if(newData.length != 0){
+              $('#status tbody').append(trHTML);
+              $('#status').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "order": [[ 0, "desc" ], [4, "asc"]]
+              });
+            }
+        }
+      });
+
+      $(":button.btn-small").click(function(){
+        
+        let action = $(this).attr("data-action");
+        console.log(commitId);
+        var data = {"body":`{"commitId": "${commitId}", "action": "${action}"}`};
+
+        $.ajax({
+            type: 'POST',
+            headers: {"x-api-key": apiKey},
+            url: "https://gksv5zanm6.execute-api.ap-southeast-1.amazonaws.com/S3",
+            data: JSON.stringify(data),
+            contentType:"application/json",
+            success: function(response) {
+            console.log(response);
+            location.reload();
+          },
+          error: function(xhr) {
+            console.log('Error!  Status = ' + xhr.status + " Message = " + xhr.statusText);
+          }
+        });
+
+      });
+
+      setTimeout(function(){
+        window.location.reload(1);
+      }, 20000);
+
+    });
+  </script>
+</html>

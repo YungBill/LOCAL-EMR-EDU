@@ -1,0 +1,367 @@
+<div class="card blue lighten-5" id="addMedication">
+
+	<form action="/master/save-medication/{{marCase._id}}/{{marCase.patientId}}" method="POST">
+
+		<div class="card-content" style="padding: 0px 24px;">
+			<div id="biography" class="section scrollspy">
+				<span class="card-title blue-text darken-3">Add Medication</span>
+				<br>
+				{{!-- ================================================================================================== --}}
+				<span class="blue-text darken-2">Search Medication</span>
+				<div class="row">
+					<div class="col s3">
+						<div class="input-field">
+							<input type="text" id="search" name="search" list="drugList">
+							<label class="" for="search">Search</label>
+							<datalist id="drugList">
+								{{#if drugList}}
+								{{#each drugList}}
+									<option value="{{drug}}">
+								{{/each}}
+								{{else}}
+									<option value="None"></option>
+								{{/if}}
+							</datalist>
+						</div>
+					</div>
+
+					<div class="col s2">
+						<div class="input-field">
+							<input type="text" id="barcodeId" name="barcodeId" list="drugList2">
+							<label class="" for="barcodeId">Barcode ID</label>
+							<datalist id="drugList2">
+								{{#if drugList}}
+								{{#each drugList}}
+								<option value="{{barcodeId}}">
+								{{/each}}
+								{{else}}
+									<option value="None"></option>
+								{{/if}}
+							</datalist>
+						</div>
+					</div>
+
+					<div class="col s2">
+						<div class="input-field">
+							<select name="category" id="category">
+							<option value="" disabled selected></option>
+							<option value="Due/Overdue">Due/Overdue</option>
+							<option value="PRN">PRN</option>
+							<option value="Insulin">Insulin</option>
+							<option value="Oral/Non-parenteral">Oral/Non-parenteral</option>
+							<option value="Parenteral/Infusion">Parenteral/Infusion</option>
+							<option value="Nebulising Med">Nebulising Med</option>
+							<option value="Discontinued">Discontinued</option>
+							</select>
+							<label>Medication Category</label>
+						</div>
+					</div>
+
+					<div class="col s2 hide" id="nebDoseParent">
+						<div class="input-field">
+							<div class="input-field">
+								<input type="text" id="nebDose">
+								<label class="" for="nebDose">Dose</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="col s2">
+						<div class="input-field hide" id="scale">
+							<a id="scaleBtn" target="_blank" href="/master/slidingScale/{{scaleId}}#addRow" class="waves-effect btn-small">Add Sliding Scale</a>
+						</div>
+						<input type="hidden" name="scaleId" value="{{scaleId}}">
+
+						<div class="input-field hide" id="neb">
+							<button type="button" class="waves-effect btn-small" id="addNeb">Add</button>
+						</div>
+						<input type="hidden" name="nebList" id="nebList">
+					</div>
+				</div>
+
+				<span class="blue-text darken-2 neb hide">Nebulising Meds</span>
+				{{!-- ================================================================================================== --}}
+				<div class="row neb hide">
+					<div class="col s10" id="nebParent">
+
+					</div>
+					<div class="col s2">
+						<button type="button" class="waves-effect btn-small" id="removeNeb">Remove Neb</button>
+					</div>
+				</div>
+
+				<span class="blue-text darken-2">Dose</span>
+					<div class="row">
+						<div class="col s3" id="doseParent">
+							<div class="input-field">
+								<input type="text" id="dose" name="dose">
+								<label class="" for="dose">Dose</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<select name="route">
+								{{#if drugRoutes}}
+								<option value="" disabled selected></option>
+								{{#each drugRoutes}}
+								<option value="{{route}}">{{route}}</option>
+								{{/each}}
+								{{else}}
+								<option value="None">None</option>
+								{{/if}}
+								</select>
+								<label>Administration Route</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<select name="frequency">
+									{{#if drugFreq}}
+									<option value="" disabled selected></option>
+									{{#each drugFreq}}
+									<option value="{{frequency}}">{{frequency}}</option>
+									{{/each}}
+									{{else}}
+									<option value="None">None</option>
+									{{/if}}
+								</select>
+								<label>Frequency</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<a target="_blank" href="/master/doseHistory/{{historyId}}#addDose" class="waves-effect btn-small">Dose History</a>
+							</div>
+							<input type="hidden" name="historyId" value="{{historyId}}">
+						</div>
+					</div>
+					
+					<span class="blue-text darken-2">Dose Date/Time</span>
+					<div class="row" id="regDose">
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseDate1" class="datepicker" type="text" name="doseDate1" required>
+								<label for="doseDate1">Date of 1st Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseTime1" type="time" class="timepicker" name="doseTime1" required>
+								<label for="doseTime1">Time of 1st Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						
+						<div class="col s2">
+							<div class="input-field">
+								<input type="text" id="doseInterval" name="doseInterval">
+								<label class="" for="doseInterval">Interval of Doses</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="text" id="doseNumber" name="doseNumber">
+								<label class="" for="doseNumber">No. of Doses</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<br>
+							<button type="button" class="waves-effect waves-light btn-small" id="iRegBtn">Irregular Intervals</button>
+						</div>
+
+					</div>
+
+					<div class="row" id="iRegDose" style="display:none">
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="iDoseDate1" class="datepicker" type="text" name="iDoseDate1">
+								<label for="iDoseDate1">Date of 1st Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="iDoseTime1" type="text" class="timepicker" name="iDoseTime1">
+								<label for="iDoseTime1">Time of 1st Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="doseTime2" class="timepicker" name="doseTime2">
+								<label for="doseTime2">Time of 2nd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="doseTime3" class="timepicker" name="doseTime3">
+								<label for="doseTime3">Time of 3rd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="doseTime4" class="timepicker" name="doseTime4">
+								<label for="doseTime4">Time of 4th Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="doseTime5" class="timepicker" name="doseTime5">
+								<label for="doseTime5">Time of 5th Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="row" style="margin-bottom:0px">
+							<div class="col s10"></div>
+							<div class="col s2">
+								<br>
+								<button type="button" class="waves-effect waves-light btn-small" id="regBtn">Regular Intervals</button>
+							</div>
+						</div>
+					</div>
+
+					<span class="blue-text darken-2">Random Dose Date/Time</span>
+					<div class="row">
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseDate1" class="datepicker" type="text" name="rDoseDate1">
+								<label for="rDoseDate1">Date of 1st Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="rDoseTime1" class="timepicker" name="rDoseTime1">
+								<label for="rDoseTime1">Time of 1st Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseDate2" class="datepicker" type="text" name="rDoseDate2">
+								<label for="rDoseDate2">Date of 2nd Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time"  id="rDoseTime2" class="timepicker" name="rDoseTime2">
+								<label for="rDoseTime2">Time of 2nd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseDate3" class="datepicker" type="text" name="rDoseDate3">
+								<label for="rDoseDate3">Date of 3rd Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="rDoseTime3" class="timepicker" name="rDoseTime3">
+								<label for="rDoseTime3">Time of 3rd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+					</div>
+
+					<span class="blue-text darken-2">Discontinuation</span>
+					{{!-- ================================================================================================== --}}
+					<div class="row">
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="discDate" class="datepicker" type="text" name="discDate">
+								<label for="discDate">Discontinuation Date</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="time" id="discTime" type="text" class="timepicker" name="discTime">
+								<label for="discTime">Discontinuation Time</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+					</div>
+				{{!-- ================================================================================================== --}}
+				<span class="blue-text darken-2">Pharmacist</span>
+				<div class="row">
+					<div class="col s2">
+
+						<label>Pharmacist Verification:</label><br>
+						<button type="button" class="waves-effect btn-small red tooltipped form-btn" data-position="bottom" data-tooltip="Not verified by a pharmacist. Verification is required" data-value="Verification required"><i class="material-icons white-text">notifications_active</i></button>
+						<button type="button" class="waves-effect btn-small blue tooltipped form-btn" data-position="bottom" data-tooltip="Not verified by a pharmacist. Verification is not required" data-value="Verification not required"><i class="material-icons white-text">notifications_active</i></button>
+						<button type="button" class="waves-effect btn-small green tooltipped form-btn" data-position="bottom" data-tooltip="Verified by a pharmacist" data-value="Verified"><i class="material-icons white-text">notifications_active</i></button>
+						
+					</div>
+
+					<div class="col s2">
+						<div class="input-field">
+							<select name="status" id="status">
+								<option value="Active" selected>Active</option>
+								<option value="Inactive">Inactive</option>
+								<option value="Discontinue">Discontinue</option>
+							</select>
+							<label>Status</label>
+						</div>
+					</div>
+
+					<div class="col s2" id="cosignParent">
+						<div class="input-field">
+							<select name="cosign" id="cosign">
+								<option value="Yes" selected>Yes</option>
+								<option value="No">No</option>
+							</select>
+							<label>Cosign</label>
+						</div>
+					</div>
+
+					<div class="col s3">
+						<div class="input-field">
+							<input type="text" id="remarks" name="remarks">
+							<label class="" for="remarks">Remarks</label>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row">
+					<div class="col s11"></div>
+
+					<div class="col s1">
+						<button type="submit" class="blue btn-small waves-effect waves-light">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="vStatus" name="vStatus">
+		<input type="hidden" name="doseType" id="doseType" value="Regular">
+	</form>
+</div>

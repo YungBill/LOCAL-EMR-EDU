@@ -1,0 +1,246 @@
+<div class="row">
+<div class="col s12" >
+	<ul class="tabs">
+		<li class="tab col s3"><a class="active" href="#upload">Upload Drug List</a></li>
+		<li class="tab col s3"><a href="#drugList">Drug List</a></li>
+		<li class="tab col s3"><a href="#drugRoutes">Routes</a></li>
+        <li class="tab col s3"><a href="#drugFreq">Frequency</a></li>
+	</ul>
+</div>
+</div>
+
+<div class="card grey lighten-4" id="upload">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Upload Drug List (Excel File)</span>
+            <br>
+			<div class="row">
+                <form action="/master/uploadExcelFile" id="form1" enctype="multipart/form-data" method="POST"> 
+                    <div class="col s4">
+                            <div class="file-field input-field">
+                                <div class="btn-small waves-effect waves-light">
+                                    <span>File</span>
+                                    <input type="file" name="myFile" required>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" id="file-text" type="text">
+                                    <label for="file-text">Upload will take a few moments to complete</label>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col s2">
+                        <br>
+                        <!-- Modal Trigger -->
+                        <a class="waves-effect waves-light btn btn-small blue modal-trigger" href="#modal1">Upload</a>
+                    </div>
+
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                        <h4>Confirm Upload</h4>
+                        <p>Upload will overwrite all existing Drug List, Routes and Frequency records</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="modal-close btn blue btn-small waves-effect waves-light">Cancel</button>
+                            <button type="submit" class="modal-close btn btn-small waves-effect waves-light" form="form1">Upload</button>
+                        {{!-- <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a> --}}
+                        </div>
+                    </div>
+
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="card blue lighten-5" id="drugList">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Drug List</span>
+            {{#if drugList}}
+                <table id="drugTable" class="striped compact">
+                    <thead>
+                        <tr>
+                            <th>
+                                Drug List
+                            </th>
+                            <th>
+                                Medication Name
+                            </th>
+                            <th>
+                                Strength
+                            </th>
+                            <th>
+                                Preparation
+                            </th>
+                            <th>
+                                Barcode
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                {{#each drugList}}
+                    <tr style="height: 50px">
+					<td>
+						{{drug}}
+					</td>
+					<td>
+						{{medicationName}}
+					</td>
+					<td>
+						{{strength}}
+					</td>
+
+					<td>
+						{{preparation}}
+					</td>
+					<td class="center">
+						<a target="_blank" href="/master/viewBarcode/{{barcodeId}}">{{barcodeId}}</a>
+					</td>
+				</tr>
+                {{/each}}
+                </tbody>
+                </table>
+            {{else}}
+            <a href="/master/drug-list" class="btn-small waves-effect waves-light">Upload Drug List</a>
+            {{/if}}
+		</div>
+	</div>
+</div>
+
+<div class="card purple lighten-5" id="drugRoutes">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Routes</span>
+            {{#if drugRoutes}}
+                <table id="routeTable" class="striped compact">
+                    <thead>
+                        <tr>
+                            <th>
+                                Route
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                {{#each drugRoutes}}
+                    <tr style="height: 50px">
+                        <td>
+                            {{route}}
+                        </td>
+                    </tr>
+
+                {{/each}}
+                </tbody>
+                </table>
+
+            {{else}}
+                <a href="/master/drug-list" class="btn-small waves-effect waves-light">Upload Drug List</a>
+            {{/if}}
+		</div>
+	</div>
+</div>
+
+<div class="card red lighten-5" id="drugFreq">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Frequency</span>
+			{{#if drugFreq}}
+                <table id="freqTable" class="striped compact">
+                    <thead>
+                        <tr>
+                            <th>
+                                Frequency
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                {{#each drugFreq}}
+                    <tr style="height: 50px">
+                        <td>
+                            {{frequency}}
+                        </td>
+                    </tr>
+
+                {{/each}}
+                </tbody>
+                </table>
+
+            {{else}}
+                <a href="/master/drug-list" class="btn-small waves-effect waves-light">Upload Drug List</a>
+            {{/if}}
+		</div>
+	</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $('.tabs').tabs();
+    var modalElems = document.querySelectorAll('.modal');
+    var modalInstances = M.Modal.init(modalElems);
+
+    $('#drugTable').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "dom": 'Bfrtip',
+        "buttons": [
+            {'extend': 'excel',
+			'title': "drug-list"
+			}, 
+			{'extend':'pdf',
+			'title': "drug-list"
+			}
+        ],
+    });
+
+    $('#routeTable').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "dom": 'Bfrtip',
+        "buttons": [
+            {'extend': 'excel',
+			'title': "drug-routes"
+			}, 
+			{'extend':'pdf',
+			'title': "drug-routes"
+			}
+        ],
+    });
+
+    $('#freqTable').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "dom": 'Bfrtip',
+        "buttons": [
+            {'extend': 'excel',
+			'title': "drug-frequency"
+			}, 
+			{'extend':'pdf',
+			'title': "drug-frequency"
+			}
+        ],
+    });
+
+    $(".buttons-excel").addClass("btn btn-small waves-light");
+	$(".buttons-pdf").addClass("btn btn-small red waves-light");
+});
+
+{{#if drugList}}
+{{#if drugRoutes}}
+{{#if drugFreq}}
+paceOptions = {
+    ajax: false, // disabled
+    document: true,
+    eventLag: false, // disabled
+    elements: {
+        selectors: [ '#drugTable, #routeTable, #freqTable']
+    }
+};
+{{/if}}
+{{/if}}
+{{/if}}
+</script>
+<script src="/assets/pace/pace.min.js"></script>

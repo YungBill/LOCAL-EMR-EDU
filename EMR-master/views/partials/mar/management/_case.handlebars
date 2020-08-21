@@ -1,0 +1,96 @@
+<div class="card grey lighten-4" id="caseDetails">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Case Details</span>
+
+			{{!-- ================================================================================================== --}}
+            <br>
+            <span class="blue-text darken-2">Patient</span>
+			<div class="row">
+				<div class="col s2">
+					<label>Ward:</label><p>{{mPatient.ward}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Bed:</label><p>{{mPatient.bed}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Ethnicity:</label><p>Chinese</p>
+				</div>
+
+                <div class="col s2">
+					<label>DOB:</label><p>{{formatDate mPatient.dob 'DD/MM/YYYY'}}</p>
+				</div>
+				
+                <div class="col s2">
+					<label>Age:</label><p>{{getAge mPatient.dob 'DD/MM/YYYY'}}</p>
+				</div>
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				<div class="col s2">
+					<label>Gender:</label><p>{{mPatient.gender}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Weight:</label><p>{{mPatient.weight}}</p>
+				</div>
+
+                <div class="col s2">
+					<label>Height:</label><p>{{mPatient.height}}</p>
+				</div>
+
+                <div class="col s2">
+					<label>Allergy:</label><p>{{mPatient.allergy}}</p>
+				</div>
+
+                <div class="col s2">
+					<label>Consultant:</label><p>{{mPatient.consultant}}</p>
+				</div>
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				<div class="col s2">
+					<label>Diagnosis:</label><p>{{mPatient.diagnosis}}</p>
+				</div>
+
+                <div class="col s2">
+					<label>Medical/Surgical History:</label><p>{{mPatient.history}}</p>
+				</div>
+
+			</div>
+			{{!-- ================================================================================================== --}}
+
+			{{!-- ================================================================================================== --}}
+            <br>
+            <span class="blue-text darken-2">Date/Time</span>
+			<div class="row">
+				<form action="/master/save-case/{{marCase._id}}" method="POST">
+					<div class="col s2">
+						<div class="input-field">
+							<input id="caseDate" class="datepicker" type="text" name="caseDate" value={{marCase.date}}>
+							<label for="caseDate">Case Date</label>
+							<span class="helper-text">dd/mm/yyyy</span>
+						</div>
+					</div>
+
+					<div class="col s2">
+						<div class="input-field">
+							<input type="time" id="caseTime" class="timepicker" name="caseTime" value={{marCase.time}}>
+							<label for="caseTime">Case Time</label>
+							<span class="helper-text">hh:mm</span>
+						</div>
+					</div>
+
+					<div class="col s1">
+						<br>
+						<button type="submit" class="blue btn-small waves-effect waves-light">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

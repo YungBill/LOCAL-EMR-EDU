@@ -1,0 +1,31 @@
+<div class="row" id="scale">
+	<br>
+	<div class="card-panel blue darken-2 white-text" style="padding:5px; font-size: 18px">Sliding Scale</div>
+	<table id="slidingScale" class="order-column">
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th class="dt-head-center">BG (mmol/L)</th>
+				<th class="dt-head-center">Additional Insulin (units)</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each scale}}
+			<tr style="height: 50px">
+				<td>{{index}}</td>
+				<td class="dt-body-center">{{BG}}</td>
+				<td class="dt-body-center"><pre>{{additionalInsulin}}</pre></td>
+				<td class="dt-body-center">
+					<a href="/master/editScale/{{_id}}" class="waves-effect btn-small green tooltipped" data-position="bottom" data-tooltip="Edit"><i class="material-icons white-text">edit</i></a>
+					{{#if @last}}
+					<a href="/master/deleteScale/{{_id}}" class="waves-effect btn-small red tooltipped" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text">delete</i></a>
+					{{else}}
+					<a href="/master/deleteScale/" class="waves-effect btn-small red tooltipped disabled" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text" disabled>delete</i></a>
+					{{/if}}
+				</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</div>

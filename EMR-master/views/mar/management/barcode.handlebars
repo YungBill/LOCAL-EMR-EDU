@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col s12 center">
+        <br>
+        <br>
+        <br>
+        <label style="font-size: larger" class="center">Click the barcode to download</label>
+    </div>
+</div>
+
+<div class="row">
+<div class="col s12 center">
+    <a href="#" id="barcodeParent" download="barcode.png">
+        <img id="barcode" height="300px"/>
+    </a>
+</div>
+
+</div>
+
+<script src="/assets/js/JsBarcode.all.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        var pathname = window.location.pathname;
+        pathname = pathname.split("/")[3];
+
+        JsBarcode("#barcode", pathname);
+        var barcodePath = $("#barcode").attr("src")
+        $("#barcodeParent").attr("href", barcodePath);
+        $("#barcodeParent").attr("download", `barcode_${pathname}`);
+    })
+</script>

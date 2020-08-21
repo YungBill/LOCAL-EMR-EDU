@@ -1,0 +1,197 @@
+<div class="card purple lighten-5" id="test3">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="medication" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Medication</span>
+			<br>
+			{{#if marMedication}}
+			<hr>
+			{{#each marMedication}}
+			{{!-- ================================================================================================== --}}
+			{{#ifCond category "Nebulising Med"}}
+			<span class="blue-text darken-2">{{showArray nebList}}</span>
+			{{else}}
+			<span class="blue-text darken-2">{{name}}</span>
+			{{/ifCond}}
+            <div class="row">
+                <div class="col s2">
+					<label>Medication Category:</label><p>{{category}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Dose:</label>
+					{{#ifCond category 'Insulin'}}
+						{{#ifCond dose undefined}}
+							<br>
+							<a target="_blank" href="/master/slidingScale/{{slidingScaleId}}" class="waves-effect btn-small form-btn">Sliding Scale</a>
+						{{else}}
+							<p>{{dose}}</p>
+						{{/ifCond}}
+					{{else}}
+					<p>{{dose}}</p>
+					{{/ifCond}}
+				</div>
+
+				<div class="col s2">
+					<label>Administration Route:</label><p>{{route}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Frequency:</label><p>{{frequency}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Dose Type:</label><p>{{doseType}}</p>
+				</div>
+
+				<div class="col s2">
+					<a href="/master/edit-medication/{{_id}}" class="waves-effect btn-small green tooltipped" data-position="bottom" data-tooltip="Edit"><i class="material-icons white-text">edit</i></a>
+					<a href="/master/delete-medication/{{_id}}" class="waves-effect btn-small red tooltipped" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text">delete</i></a>
+				</div>
+
+            </div>
+
+			<div class="row" style="display:{{medicationTypeRegular doseType}}">
+
+                <div class="col s2">
+					<label>Date of 1st Dose:</label><p>{{doseDate}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 1st Dose:</label><p>{{extractArrayItem doseTime 0}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Interval of Doses (hrs):</label><p>{{doseInterval}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>No. of Doses (hrs):</label><p>{{numOfDoses}}</p>
+				</div>
+
+				<div class="col s4">
+					<label>Dose Timings:</label><p>{{doseTimings doseTime}}</p>
+				</div>
+            </div>
+
+			<div class="row" style="display:{{medicationTypeIrregular doseType}}">
+
+                <div class="col s2">
+					<label>Date of 1st Dose:</label><p>{{doseDate}}</p>
+				</div>
+
+				{{#ifCond doseType "Regular"}}
+				<div class="col s4">
+					<label>Dose Timings:</label><p>{{doseTimings doseTime}}</p>
+				</div>
+				{{else}}
+
+				<div class="col s2">
+					<label>Time of 1st Dose:</label><p>{{extractArrayItem doseTime 0}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 2nd Dose:</label><p>{{extractArrayItem doseTime 1}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 3rd Dose:</label><p>{{extractArrayItem doseTime 2}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 4th Dose:</label><p>{{extractArrayItem doseTime 3}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 5th Dose:</label><p>{{extractArrayItem doseTime 4}}</p>
+				</div>
+				{{/ifCond}}
+            </div>
+
+			<div class="row">
+				<label class="blue-text darken-2">Random Doses:</label>
+				<br>
+                <div class="col s2">
+					<label>Date of 1st Dose:</label><p>{{extractArrayItem randomDoseDate 0}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 1st Dose:</label><p>{{extractArrayItem randomDoseTime 0}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Date of 2nd Dose:</label><p>{{extractArrayItem randomDoseDate 1}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 2nd Dose:</label><p>{{extractArrayItem randomDoseTime 1}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Date of 3rd Dose:</label><p>{{extractArrayItem randomDoseDate 2}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Time of 3rd Dose:</label><p>{{extractArrayItem randomDoseTime 2}}</p>
+				</div>
+            </div>
+
+			<div class="row">
+				<label class="blue-text darken-2">Discontinuation:</label>
+				<br>
+                <div class="col s2">
+					<label>Discontinuation Date:</label><p>{{ifEmpty discontinuationDate}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Discontinuation Time:</label><p>{{ifEmpty discontinuationTime}}</p>
+				</div>
+			</div>
+
+			<div class="row">
+				<label class="blue-text darken-2">Pharmacist:</label>
+				<br>
+				<div class="col s2">
+					<label>Cosign:</label>
+					{{#if cosign}}
+						<p>{{cosign}}</p>
+						{{else}}
+						<p>None</p>
+					{{/if}}
+				</div>
+
+				<div class="col s2">
+					<label>Status:</label><p>{{status}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Remarks:</label><p>{{ifEmpty remarks}}</p>
+				</div>
+
+				<div class="col s2">
+					<label>Pharmacist Verification:</label><br>
+					{{#if pharmacistVerification}}
+					<button class="waves-effect btn-small {{checkVerificationType pharmacistVerification}} tooltipped" data-position="bottom" data-tooltip="{{pharmacistVerification}}"><i class="material-icons white-text">notifications_active</i></button>
+					{{else}}
+					<p>None</p>
+					{{/if}}
+				</div>
+
+				<div class="col s2">
+					<br>
+					<a href="/master/doseHistory/{{historyId}}" target="_blank" class="btn-small waves-effect waves-light">Dose History</a>
+				</div>
+
+				{{!-- {{#with marCase}} --}}
+				{{!-- <div class="col s2"> --}}
+					<a style="margin-left: 10px" class="waves-effect waves-light btn-small" href="/master/medication-administration/{{caseId}}">Medication Administration</a>
+				{{!-- </div> --}}
+				{{!-- {{/with}} --}}
+            </div>
+			<hr>
+			{{/each}}
+			{{else}}
+			<a href="/master/mar-management/{{marCase.patientId}}/#addMedication" class="btn-small waves-effect waves-light">Add medication</a>
+			{{/if}}
+        </div>
+	</div>
+</div>

@@ -1,0 +1,87 @@
+<!-- CARD WITH TITLE -->
+<div class="row">
+<div class="col s12">
+	<ul class="tabs">
+		<li class="tab col s3"><a class="active" href="#edit">Edit Row</a></li>
+	</ul>
+</div>
+</div>
+
+<div class="card grey lighten-4" id="edit">
+	<div class="card-content" style="padding: 0px 24px;">
+        {{#if row}}
+            <form action="/master/editDoseHistory/{{row._id}}" method="POST">
+                <div id="scale" class="section scrollspy">
+                    <div class="row">
+                        <div class="col s2">
+                            <span class="card-title blue-text darken-3">Add Row</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s3">
+                            <div class="input-field">
+                                <input id="date" class="datepicker" type="text" name="date" value="{{row.date}}" required>
+                                <label for="date">Date</label>
+                                <span class="helper-text">dd/mm/yyyy</span>
+                            </div>
+                        </div>
+                        <div class="col s3">
+                            <div class="input-field">
+                                    <input id="time" type="text" class="timepicker" name="time" value="{{row.time}}" required>
+                                    <label for="time">Time</label>
+                                    <span class="helper-text">hh:ss</span>
+                            </div>
+                        </div>
+                        <div class="col s3">
+                            <div class="input-field">
+                                <input type="text" id="serve" name="serve" value="{{row.servedBy}}"required>
+                                <label class="" for="serve">Served By</label>
+                            </div>
+                        </div>
+                        <div class="col s2">
+                            <div class="input-field">
+                                <button type="submit" class="waves-effect btn-small blue form-btn">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {{/if}}
+	</div>
+</div>
+
+<script>
+paceOptions = {
+	ajax: false, // disabled
+	document: true,
+	eventLag: false, // disabled
+	elements: {
+		selectors: [ '#doseTable']
+	}
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    $('.tabs').tabs();
+
+    var elems = document.querySelectorAll('select');
+    var options = document.querySelectorAll('option');
+    var instances = M.FormSelect.init(elems, options);
+
+	var tooltip = document.querySelectorAll('.tooltipped');
+    var toolTipInstances = M.Tooltip.init(tooltip, options);
+
+    const doseDate = document.querySelector('#date');
+    const doseTime = document.querySelector('#time');
+
+    M.Datepicker.init(date, {
+        maxDate: new Date(),
+        format: 'dd/mm/yyyy',
+    });
+
+    M.Timepicker.init(time, {
+        twelveHour: false,
+        showClearBtn: true
+    });
+})
+</script>

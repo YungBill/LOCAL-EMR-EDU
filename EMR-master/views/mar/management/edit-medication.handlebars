@@ -1,0 +1,565 @@
+<!-- CARD WITH TITLE -->
+<div class="row">
+<div class="col s12">
+	<ul class="tabs">
+		<li class="tab col s3"><a href="#editMedication">Edit Medication</a></li>
+	</ul>
+</div>
+</div>
+
+{{#if medication}}
+<div class="card blue lighten-5" id="editMedication">
+
+	<form action="/master/edit-medication/{{medication._id}}" method="POST">
+
+		<div class="card-content" style="padding: 0px 24px;">
+			<div id="biography" class="section scrollspy">
+				<span class="card-title blue-text darken-3">Edit Medication</span>
+				<br>
+				{{!-- ================================================================================================== --}}
+				<span class="blue-text darken-2">Search Medication</span>
+				<div class="row">
+					<div class="col s3">
+						<div class="input-field">
+							{{#ifCond medication.category 'Nebulising Med'}}
+							<input type="text" id="search" name="search" list="drugList" value="{{medication.name}}">
+							<label class="" for="search">Search</label>
+							<datalist id="drugList">
+								{{#if drugList}}
+								{{#each drugList}}
+								<option value="{{drug}}">
+								{{/each}}
+								{{else}}
+									<option value="None"></option>
+								{{/if}}
+							</datalist>
+							{{else}}
+							<input type="text" id="search" name="search" list="drugList" disabled value="{{medication.name}}">
+							<label class="" for="search">Search</label>
+							{{/ifCond}}
+						</div>
+					</div>
+
+					<div class="col s2">
+						<div class="input-field">
+							<select name="category" disabled>
+							<option value="{{medication.category}}">{{medication.category}}</option>
+							</select>
+							<label>Medication Category</label>
+						</div>
+					</div>
+
+					{{#ifCond medication.category 'Nebulising Med'}}
+					<div class="col s2" id="nebDoseParent">
+						<div class="input-field">
+							<div class="input-field">
+								<input type="text" id="nebDose">
+								<label class="" for="nebDose">Dose</label>
+							</div>
+						</div>
+					</div>
+					{{/ifCond}}
+
+					<div class="col s2">
+						{{#ifCond medication.category 'Insulin'}}
+							{{#ifCond medication.dose undefined}}
+							<div class="input-field" id="scale">
+								<a target="_blank" href="/master/slidingScale/{{medication.slidingScaleId}}" class="waves-effect btn-small">Sliding Scale</a>
+							</div>
+							{{/ifCond}}
+						{{/ifCond}}
+						{{#ifCond medication.category 'Nebulising Med'}}
+							<div class="input-field" id="neb">
+								<button type="button" class="waves-effect btn-small" id="addNeb">Add</button>
+							</div>
+							<input type="hidden" name="nebList" id="nebList" value="{{medication.nebList}}">
+						{{/ifCond}}
+					</div>
+
+				</div>
+
+				{{#ifCond medication.category 'Nebulising Med'}}
+				<span class="blue-text darken-2 neb">Nebulising Meds</span>
+				{{!-- ================================================================================================== --}}
+				<div class="row neb">
+					<div class="col s10" id="nebParent">
+
+					</div>
+					<div class="col s2">
+						<button type="button" class="waves-effect btn-small" id="removeNeb">Remove Neb</button>
+					</div>
+				</div>
+				{{/ifCond}}
+
+				<span class="blue-text darken-2">Dose</span>
+					<div class="row">
+						{{#ifCond medication.category 'Nebulising Med'}}
+						{{else}}
+						<div class="col s3">
+							<div class="input-field">
+								{{#ifCond medication.category 'Insulin'}}
+									{{#ifCond medication.dose undefined}}
+										<input type="text" id="dose" name="dose" value="{{medication.dose}}" disabled>
+										{{else}}
+										<input type="text" id="dose" name="dose" value="{{medication.dose}}">
+									{{/ifCond}}
+								{{else}}
+								<input type="text" id="dose" name="dose" value="{{medication.dose}}">
+								{{/ifCond}}
+								<label class="" for="dose">Dose</label>
+							</div>
+						</div>
+						{{/ifCond}}
+
+						<div class="col s2">
+							<div class="input-field">
+								<select name="route" id="route">
+								{{#if drugRoutes}}
+								{{#each drugRoutes}}
+									<option value="{{route}}">{{route}}</option>
+								{{/each}}
+								{{else}}
+								<option value="None">None</option>
+								{{/if}}
+								</select>
+								<label>Administration Route</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<select name="frequency" id="frequency">
+									{{#if drugFreq}}
+									{{#each drugFreq}}
+									<option value="{{frequency}}">{{frequency}}</option>
+									{{/each}}
+									{{else}}
+									<option value="None">None</option>
+									{{/if}}
+								</select>
+								<label>Frequency</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<a target="_blank" href="/master/doseHistory/{{medication.historyId}}#addDose" class="waves-effect btn-small">Dose History</a>
+							</div>
+							<input type="hidden" name="historyId" value="{{medication.historyId}}">
+						</div>
+					</div>
+					
+					<span class="blue-text darken-2">Dose Date/Time</span>
+					<div class="row" id="regDose" style="display:{{medicationTypeRegular medication.doseType}}">
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseDate1" class="datepicker" type="text" name="doseDate1" value="{{extractDoseDate medication.doseDate medication.doseType "Regular"}}">
+								<label for="doseDate1">Date of 1st Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseTime1" type="time" class="timepicker" name="doseTime1" value="{{extractDoseInterval medication.doseTime 0 medication.doseType "Regular"}}">
+								{{!-- <input id="doseTime1" type="text" class="timepicker" name="doseTime1" value="{{extractDoseInterval medication.doseTime 0 medication.doseType "Regular"}}"> --}}
+								<label for="doseTime1">Time of 1st Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						
+						<div class="col s2">
+							<div class="input-field">
+								<input type="text" id="doseInterval" name="doseInterval" value="{{medication.doseInterval}}">
+								<label class="" for="doseInterval">Interval of Doses</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input type="text" id="doseNumber" name="doseNumber" value="{{medication.numOfDoses}}">
+								<label class="" for="doseNumber">No. of Doses</label>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<br>
+							<button type="button" class="waves-effect waves-light btn-small" id="iRegBtn">Irregular Intervals</button>
+						</div>
+
+					</div>
+
+					<div class="row" id="iRegDose" style="display:{{medicationTypeIrregular medication.doseType}}">
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="iDoseDate1" class="datepicker" type="text" name="iDoseDate1" value="{{extractDoseDate medication.doseDate medication.doseType "Irregular"}}">
+								<label for="iDoseDate1">Date of 1st Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="iDoseTime1" type="time" class="timepicker" name="iDoseTime1"  value="{{extractDoseInterval medication.doseTime 0 medication.doseType "Irregular"}}">
+								<label for="iDoseTime1">Time of 1st Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseTime2" type="time" class="timepicker" name="doseTime2"  value="{{extractDoseInterval medication.doseTime 1 medication.doseType "Irregular"}}">
+								<label for="doseTime2">Time of 2nd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseTime3" type="time" class="timepicker" name="doseTime3" value="{{extractDoseInterval medication.doseTime 2 medication.doseType "Irregular"}}">
+								<label for="doseTime3">Time of 3rd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseTime4" type="time" class="timepicker" name="doseTime4" value="{{extractDoseInterval medication.doseTime 3 medication.doseType "Irregular"}}">
+								<label for="doseTime4">Time of 4th Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="doseTime5" type="time" class="timepicker" name="doseTime5" value="{{extractDoseInterval medication.doseTime 4 medication.doseType "Irregular"}}">
+								<label for="doseTime5">Time of 5th Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="row" style="margin-bottom:0px">
+							<div class="col s10"></div>
+							<div class="col s2">
+								<br>
+								<button type="button" class="waves-effect waves-light btn-small" id="regBtn">Regular Intervals</button>
+							</div>
+						</div>
+					</div>
+
+					<span class="blue-text darken-2">Random Dose Date/Time</span>
+					<div class="row">
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseDate1" class="datepicker" type="text" name="rDoseDate1" value="{{extractArrayItem medication.randomDoseDate 0 "edit"}}">
+								<label for="rDoseDate1">Date of 1st Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseTime1" type="time" class="timepicker" name="rDoseTime1" value="{{extractArrayItem medication.randomDoseTime 0 "edit"}}">
+								<label for="rDoseTime1">Time of 1st Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseDate2" class="datepicker" type="text" name="rDoseDate2" value="{{extractArrayItem medication.randomDoseDate 1 "edit"}}">
+								<label for="rDoseDate2">Date of 2nd Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseTime2" type="time" class="timepicker" name="rDoseTime2" value="{{extractArrayItem medication.randomDoseTime 1 "edit"}}">
+								<label for="rDoseTime2">Time of 2nd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseDate3" class="datepicker" type="text" name="rDoseDate3" value="{{extractArrayItem medication.randomDoseDate 2 "edit"}}">
+								<label for="rDoseDate3">Date of 3rd Dose</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="rDoseTime3" type="time" class="timepicker" name="rDoseTime3" value="{{extractArrayItem medication.randomDoseTime 2 "edit"}}">
+								<label for="rDoseTime3">Time of 3rd Dose</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+					</div>
+
+					<span class="blue-text darken-2">Discontinuation</span>
+					{{!-- ================================================================================================== --}}
+					<div class="row">
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="discDate" class="datepicker" type="text" name="discDate" value="{{medication.discontinuationDate}}">
+								<label for="discDate">Discontinuation Date</label>
+								<span class="helper-text">dd/mm/yyyy</span>
+							</div>
+						</div>
+
+						<div class="col s2">
+							<div class="input-field">
+								<input id="discTime" type="time" class="timepicker" name="discTime" value="{{medication.discontinuationTime}}">
+								<label for="discTime">Discontinuation Time</label>
+								<span class="helper-text">hh:mm</span>
+							</div>
+						</div>
+
+					</div>
+				{{!-- ================================================================================================== --}}
+				<span class="blue-text darken-2">Pharmacist</span>
+				<div class="row">
+					<div class="col s2">
+
+						<label>Pharmacist Verification:</label><br>
+						<button type="button" class="waves-effect btn-small {{verificationBell medication.pharmacistVerification "Verification required" "red"}} tooltipped" data-colour="red" data-position="bottom" data-tooltip="Not verified by a pharmacist. Verification is required" data-value="Verification required"><i class="material-icons white-text">notifications_active</i></button>
+						<button type="button" class="waves-effect btn-small {{verificationBell medication.pharmacistVerification "Verification not required" "blue"}} tooltipped" data-colour="blue" data-position="bottom" data-tooltip="Not verified by a pharmacist. Verification is not required" data-value="Verification not required"><i class="material-icons white-text">notifications_active</i></button>
+						<button type="button" class="waves-effect btn-small {{verificationBell medication.pharmacistVerification "Verified" "green"}} tooltipped" data-colour="green" data-position="bottom" data-tooltip="Verified by a pharmacist" data-value="Verified"><i class="material-icons white-text">notifications_active</i></button>
+						
+					</div>
+
+					<div class="col s2">
+						<div class="input-field">
+							<select name="status" id="status">
+								<option value="Active" selected>Active</option>
+								<option value="Inactive">Inactive</option>
+								<option value="Discontinue">Discontinue</option>
+							</select>
+							<label>Status</label>
+						</div>
+					</div>
+
+					{{#ifCond medication.status "Active"}}
+					<div class="col s2" id="cosignParent">
+						<div class="input-field">
+							<select name="cosign" id="cosign">
+								<option value="Yes" selected>Yes</option>
+								<option value="No">No</option>
+							</select>
+							<label>Cosign</label>
+						</div>
+					</div>
+					{{else}}
+					<div class="col s2 hide" id="cosignParent">
+						<div class="input-field">
+							<select name="cosign" id="cosign">
+								<option value="Yes" selected>Yes</option>
+								<option value="No">No</option>
+							</select>
+							<label>Cosign</label>
+						</div>
+					</div>
+					{{/ifCond}}
+
+					<div class="col s3">
+						<div class="input-field">
+							<input type="text" id="remarks" name="remarks" value="{{medication.remarks}}">
+							<label class="" for="remarks">Remarks</label>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="row">
+					<div class="col s11"></div>
+
+					<div class="col s1">
+						<button type="submit" class="blue btn-small waves-effect waves-light">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="vStatus" name="vStatus" value="{{medication.pharmacistVerification}}">
+	</form>
+</div>
+{{/if}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+	$("#route").val("{{medication.route}}");
+	$("#route").formSelect();
+	$("#frequency").val("{{medication.frequency}}");
+	$("#frequency").formSelect();
+	$("#cosign").val("{{medication.cosign}}");
+	$("#cosign").formSelect();
+	$("#status").val("{{medication.status}}");
+	$("#status").formSelect();
+
+    var selectElems = document.querySelectorAll('select');
+    var options = document.querySelectorAll('option');
+    var selectInstances = M.FormSelect.init(selectElems, options);
+
+	var tooltipElems = document.querySelectorAll('.tooltipped');
+    var tooltipInstances = M.Tooltip.init(tooltipElems, options);
+
+	$(".waves-effect.btn-small.tooltipped").click(function(){
+		var verification = $(this).attr("data-value");
+		$(".waves-effect.btn-small.tooltipped").attr("disabled", true);
+		$(this).attr("disabled", false);
+		var colour = $(this).attr("data-colour");
+		$(this).removeClass("grey");
+		$(this).addClass(colour);
+
+		$("#vStatus").val(verification);
+	})
+
+	$('.tabs').tabs();
+
+	$('#iRegBtn').click(function(){
+		$('#regDose').hide();
+		$('#iRegDose').show();
+
+		$('#doseDate1').val('');
+
+		
+		$('#doseDate1').removeAttr("required");
+		$('#iDoseDate1').attr('required', 'true');
+
+		$('#doseTime1').val('');
+		$('#doseInterval').val('');
+		$('#doseNumber').val('');
+	});
+
+	$('#regBtn').click(function(){
+
+		$('#regDose').show();
+		$('#iRegDose').hide();
+
+		$('#doseDate1').attr('required', 'true');
+		$('#iDoseDate1').removeAttr("required");
+
+		$('#iDoseDate1').val('');
+		$('#iDoseTime1').val('');
+		$('#doseTime2').val('');
+		$('#doseTime3').val('');
+		$('#doseTime4').val('');
+		$('#doseTime5').val('');
+	});
+
+	$('#status').change(function(){
+		var status = $(this).val();
+		
+		if(status!="Active"){
+			$("#cosignParent").addClass("hide");
+			$("#cosign").val("");
+		}
+		else{
+			$("#cosignParent").removeClass("hide");
+		}
+	})
+
+	{{#ifCond medication.category 'Nebulising Med'}}
+		initialize();
+
+		$('#addNeb').click(function(){
+			var search = $("#search").val();
+			var dose = $("#nebDose").val();
+			nebList.push(`${search} : ${dose}`);
+			displayNeb();
+			$("#search").val("");
+			$("#nebDose").val("");
+		})
+
+		$('#removeNeb').click(function(){
+			$(":checkbox:checked").each(function () {
+				var index = $(this).attr("data-index");
+				remove(index);
+			});
+		})
+
+		function buildlist(){
+			var nList = "";
+			nebList.forEach(element=>{
+				nList+=`${element},`
+				$("#nebList").val(nList);
+			})
+		}
+
+		function remove(index) {
+			nebList.splice(index, 1);
+			var marked = $(`label[data-index='${index}']`);
+			displayNeb();
+		}
+
+		function displayNeb(){
+			$("#nebParent").empty();
+			nebList.forEach((element, index)=>{
+				var child = `<label data-index='${index}'><input type='checkbox' value='${element}' name="nebCB" data-index='${index}'/> <span style='padding-left: 25px; padding-right: 10px'>${element}</span></label>`
+				$("#nebParent").append(child);
+				buildlist();
+			})
+		}
+
+		function initialize(){
+			var arr = $("#nebList").val();
+			arr = arr.split(",");
+			nebList = arr;
+			displayNeb();
+		}
+	{{/ifCond}}
+});
+
+	
+	document.addEventListener('DOMContentLoaded', () =>{
+
+		{{!-- Regular interval --}}
+		const doseDate1 = document.querySelector('#doseDate1');
+
+		{{!-- Irregular interval --}}
+		const iDoseDate1 = document.querySelector('#iDoseDate1');
+
+		{{!-- Regular interval --}}
+		const rDoseDate1 = document.querySelector('#rDoseDate1');
+		const rDoseDate2 = document.querySelector('#rDoseDate2');
+		const rDoseDate3 = document.querySelector('#rDoseDate3');
+
+		{{!-- Discontinuation --}}
+		const discDate = document.querySelector('#discDate');
+
+		M.Datepicker.init(iDoseDate1, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(doseDate1, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(rDoseDate1, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(rDoseDate2, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(rDoseDate3, {
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(discDate, {
+			format: 'dd/mm/yyyy',
+		});
+	});
+
+</script>
+
+
+
+
+

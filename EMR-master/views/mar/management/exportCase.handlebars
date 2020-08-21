@@ -1,0 +1,97 @@
+<br>
+<br>
+<br>
+<br>
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 18px">Export Case Medication</div>
+<table id="excelList" class="striped compact">
+	<thead>
+		<tr>
+			<th>
+				Drug List
+			</th>
+			<th>
+				Medication Name
+			</th>
+			<th>
+				Strength
+			</th>
+			<th>
+				Preparation
+			</th>
+			<th>
+				Barcode
+			</th>
+		</tr>
+	</thead>
+			<tbody>
+				{{#each drugs}}
+				<tr style="height: 50px">
+					<td>
+						{{drug}}
+					</td>
+					<td>
+						{{medicationName}}
+					</td>
+					<td>
+						{{strength}}
+					</td>
+
+					<td>
+						{{preparation}}
+					</td>
+					<td class="center">
+						<a target="_blank" href="/master/viewBarcode/{{barcodeId}}">{{barcodeId}}</a>
+					</td>
+				</tr>
+				{{/each}}
+		</tbody>
+</table>
+
+<script>
+
+	paceOptions = {
+		ajax: false, // disabled
+		document: true,
+		eventLag: false, // disabled
+		elements: {
+			selectors: [ '#excelList']
+		}
+	};
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var options = document.querySelectorAll('option');
+    var instances = M.FormSelect.init(elems, options);
+
+	var tooltip = document.querySelectorAll('.tooltipped');
+    var toolTipInstances = M.Tooltip.init(tooltip, options);
+
+	var pathname = window.location.pathname; 
+	var name = pathname.split("/")[4];
+
+	var stuff = "{{exportHelper medications}}";
+	
+	$('#excelList').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "pagingType": "full_numbers",
+		"dom": 'Bfrtip',
+        "buttons": [
+            {'extend': 'excel',
+			'title': name
+			}, 
+			{'extend':'pdf',
+			'title': name
+			}
+        ],
+    }).search(stuff, true, false).draw();
+
+	$(".buttons-excel").addClass("btn btn-small waves-light");
+	$(".buttons-pdf").addClass("btn btn-small red waves-light");
+});
+</script>
+<script src="/assets/pace/pace.min.js"></script>
+
+
+

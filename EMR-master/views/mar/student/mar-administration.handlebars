@@ -1,0 +1,1425 @@
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<style>
+    .circle-loader {
+     margin-left: 3em;
+	 border: 1px solid rgba(0, 0, 0, 0.2);
+	 border-left-color: #009933;
+	 animation: loader-spin 1.2s infinite linear;
+	 position: relative;
+	 display: inline-block;
+	 vertical-align: top;
+	 border-radius: 50%;
+	 width: 2em;
+	 height: 2em;
+}
+ .load-complete {
+	 -webkit-animation: none;
+	 animation: none;
+	 border-color: #009933;
+	 transition: border 500ms ease-out;
+}
+ .checkmark {
+	 display: none;
+}
+ .checkmark.draw:after {
+	 animation-duration: 800ms;
+	 animation-timing-function: ease;
+	 animation-name: checkmark;
+	 transform: scaleX(-1) rotate(135deg);
+}
+ .checkmark:after {
+	 opacity: 1;
+	 height: 1em;
+	 width: 0.5em;
+	 transform-origin: left top;
+	 border-right: 3px solid #006600;
+	 border-top: 3px solid #006600;
+	 content: "";
+	 left: 0.5em;
+	 top: 1em;
+	 position: absolute;
+}
+ @keyframes loader-spin {
+	 0% {
+		 transform: rotate(0deg);
+	}
+	 100% {
+		 transform: rotate(360deg);
+	}
+}
+ @keyframes checkmark {
+	 0% {
+		 height: 0;
+		 width: 0;
+		 opacity: 1;
+	}
+	 20% {
+		 height: 0;
+		 width: 0.5em;
+		 opacity: 1;
+	}
+	 40% {
+		 height: 1em;
+		 width: 0.5em;
+		 opacity: 1;
+	}
+	 100% {
+		 height: 1em;
+		 width: 0.5em;
+		 opacity: 1;
+	}
+}
+
+{{!-- Adding it twice so for 2 different buttons under Medication Administration "Due" --}}
+.circle-loader2 {
+     margin-left: 3em;
+	 border: 1px solid rgba(0, 0, 0, 0.2);
+	 border-left-color: #009933;
+	 animation: loader-spin 1.2s infinite linear;
+	 position: relative;
+	 display: inline-block;
+	 vertical-align: top;
+	 border-radius: 50%;
+	 width: 2em;
+	 height: 2em;
+}
+ .load-complete2 {
+	 -webkit-animation: none;
+	 animation: none;
+	 border-color: #009933;
+	 transition: border 500ms ease-out;
+}
+ .checkmark2 {
+	 display: none;
+}
+ .checkmark2.draw:after {
+	 animation-duration: 800ms;
+	 animation-timing-function: ease;
+	 animation-name: checkmark;
+	 transform: scaleX(-1) rotate(135deg);
+}
+ .checkmark2:after {
+	 opacity: 1;
+	 height: 1em;
+	 width: 0.5em;
+	 transform-origin: left top;
+	 border-right: 3px solid #006600;
+	 border-top: 3px solid #006600;
+	 content: "";
+	 left: 0.5em;
+	 top: 1em;
+	 position: absolute;
+}
+ @keyframes loader-spin2 {
+	 0% {
+		 transform: rotate(0deg);
+	}
+	 100% {
+		 transform: rotate(360deg);
+	}
+}
+ @keyframes checkmark2 {
+	 0% {
+		 height: 0;
+		 width: 0;
+		 opacity: 1;
+	}
+	 20% {
+		 height: 0;
+		 width: 0.5em;
+		 opacity: 1;
+	}
+	 40% {
+		 height: 1em;
+		 width: 0.5em;
+		 opacity: 1;
+	}
+	 100% {
+		 height: 1em;
+		 width: 0.5em;
+		 opacity: 1;
+	}
+}
+</style>
+
+{{#if user}}
+	{{> _add-btn}}
+{{/if}}
+<br>
+
+
+{{!-- Header for the nav bars for MAR Administration --}}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="due-tab" data-toggle="tab" href="#due" role="tab" aria-controls="due" aria-selected="false">Due/OverDue</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="prn-tab" data-toggle="tab" href="#prn" role="tab" aria-controls="prn" aria-selected="false">PRN</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="insulin-tab" data-toggle="tab" href="#insulin" role="tab" aria-controls="insulin" aria-selected="false">Insulin</a>
+  </li>
+    <li class="nav-item">
+    <a class="nav-link" id="oral-tab" data-toggle="tab" href="#oral" role="tab" aria-controls="oral" aria-selected="false">Oral/Non-Parenteral</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="parenteral-tab" data-toggle="tab" href="#parenteral" role="tab" aria-controls="parenteral" aria-selected="false">Parenteral/Infusion</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="nebulisingMed-tab" data-toggle="tab" href="#nebulisingMed" role="tab" aria-controls="nebulisingMed" aria-selected="false">Nebulising Med</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="discontinued-tab" data-toggle="tab" href="#discontinued" role="tab" aria-controls="discontinued" aria-selected="false">Discontinued</a>
+  </li>
+</ul>
+{{!-- End for header for the nav bars for MAR Administration --}}
+<div class="tab-content" id="myTabContent">
+    {{!-- Start of contents for All tab --}}
+    <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+      <div>
+
+<table class="admTable" id="MARMasterTable">
+      <tr>
+        <th colspan="4" class="medCol">{{ marCase.time }}</th>
+        <th colspan="24">{{formatMonthDay marCase.date }}</th> 
+    </tr>
+
+    {{#each marMedication}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+
+    </tr>
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/each}}
+</table>
+</div>
+{{#each medAdmin}}
+<div class="admCaseHidden">
+    <span class="admCasemedId">{{medicationId}}</span>
+    <span class="admCaseadmType">{{adminType}}</span>
+    <span class="admCasedate">{{date}}</span>
+    <span class="admCasetime">{{time}}</span>
+    <span class="admCaseremarks">{{remarks}}</span>
+    <span class="admCaseoverdueTime">{{overdueTime}}</span>
+    <span class="admCaseadministeredBy">{{administeredBy}}</span>
+    <span class="admCaseCosignedBy">{{cosignedBy}}</span>
+    <span class="admCaseId">{{_id}}</span>
+</div>
+
+{{/each}}   
+    </div>
+    {{!-- End of contents for All tab --}}
+
+    {{!-- Start of contents for Due/Overdue Tab --}}
+    <div class="tab-pane fade" id="due" role="tabpanel" aria-labelledby="due-tab">
+              <div>
+
+<table class="admTable" id="MARMasterTable">
+   
+
+     <tr>
+        <th colspan="4" class="medCol">{{marCase.time}}</th>
+        <th colspan="24">{{formatMonthDay marCase.date}}</th> 
+    </tr>
+
+    {{#each marMedication}}
+    {{#ifCond category 'Due/Overdue'}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+    </tr>
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/ifCond}}
+    {{/each}}
+</table>
+      </div> 
+    </div>
+    {{!-- End of contents for Due/Overdue Tab --}}
+
+    {{!-- Start of contents for PRN Tab --}}
+    <div class="tab-pane fade" id="prn" role="tabpanel" aria-labelledby="prn-tab">
+           <div>
+
+<table class="admTable" id="MARMasterTable">
+  
+
+      <tr>
+        <th colspan="4" class="medCol">{{marCase.time}}</th>
+        <th colspan="24">{{formatMonthDay marCase.date}}</th> 
+    </tr>
+
+        {{#each marMedication}}
+    {{#ifCond category 'PRN'}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+    </tr>
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/ifCond}}
+    {{/each}}
+</table>
+      </div>   
+    </div>
+    {{!-- End of contents for PRN Tab --}}
+
+    {{!-- Start of contents for Insulin Tab --}}
+    <div class="tab-pane fade" id="insulin" role="tabpanel" aria-labelledby="insulin-tab">
+           <div>
+
+<table class="admTable" id="MARMasterTable">
+
+      <tr>
+        <th colspan="4" class="medCol">{{marCase.time}}</th>
+        <th colspan="24">{{formatMonthDay marCase.date}}</th> 
+    </tr>
+
+    {{#each marMedication}}
+    {{#ifCond category 'Insulin'}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+    </tr>
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/ifCond}}
+    {{/each}}
+</table>
+      </div>  
+    </div>
+        {{!-- End of contents for Insulin Tab --}}
+
+    {{!-- Start of contents for Oral/Non-Parenteral Tab --}}
+    <div class="tab-pane fade" id="oral" role="tabpanel" aria-labelledby="oral-tab">
+         <div>
+
+<table class="admTable" id="MARMasterTable">
+
+     <tr>
+        <th colspan="4" class="medCol">{{marCase.time}}</th>
+        <th colspan="24">{{formatMonthDay marCase.date}}</th> 
+    </tr>
+
+        {{#each marMedication}}
+    {{#ifCond category 'Oral/Non-parenteral'}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+    </tr>
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/ifCond}}
+    {{/each}}
+</table>
+      </div> 
+    </div>
+    {{!-- End of contents for Oral/Non-Parenteral Tab --}}
+
+    {{!-- Start of contents for Parenteral/Infusion Tab --}}
+    <div class="tab-pane fade" id="parenteral" role="tabpanel" aria-labelledby="parenteral-tab">
+        <div>
+
+<table class="admTable" id="MARMasterTable">
+  
+
+      <tr>
+        <th colspan="4" class="medCol">{{marCase.time}}</th>
+        <th colspan="24">{{formatMonthDay marCase.date}}</th> 
+    </tr>
+
+        {{#each marMedication}}
+    {{#ifCond category 'Parenteral/Infusion'}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+    </tr>
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/ifCond}}
+    {{/each}}
+</table>
+      </div> 
+    </div>
+    {{!-- End of contents for Parenteral/Infusion Tab --}}
+
+    {{!-- Start of contents for Nebulising Med Tab --}}
+    <div class="tab-pane fade" id="nebulisingMed" role="tabpanel" aria-labelledby="nebulisingMed-tab">
+         <div>
+
+<table class="admTable" id="MARMasterTable">
+
+        <tr>
+        <th colspan="4" class="medCol">{{marCase.time}}</th>
+        <th colspan="24">{{formatMonthDay marCase.date}}</th> 
+    </tr>
+
+        {{#each marMedication}}
+    {{#ifCond category 'Nebulising Med'}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+    </tr>
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/ifCond}}
+    {{/each}}
+</table>
+      </div>
+    </div>
+    {{!-- End of contents for Nebulising Med Tab --}}
+
+    {{!-- Start of contents for discontinued Med Tab --}}
+    <div class="tab-pane fade" id="discontinued" role="tabpanel" aria-labelledby="discontinued-tab">
+             <div>
+
+<table class="admTableDiscontinued" id="MARMasterTable">
+
+
+        <tr>
+        <th colspan="4" class="medCol">{{marCase.time}}</th>
+        <th colspan="24">{{formatMonthDay marCase.date}}</th> 
+    </tr>
+
+        {{#each marMedication}}
+    {{#ifCond category 'Discontinued'}}
+    <tr>
+        <th colspan="4" class="medCol"></th>
+
+                <th>0000</th>
+                <th>0100</th>
+                <th>0200</th>
+                <th>0300</th>
+                <th>0400</th>
+                <th>0500</th>
+                <th>0600</th>
+                <th>0700</th>
+                <th>0800</th>
+                <th>0900</th>
+                <th>1000</th>
+                <th>1100</th>
+                <th>1200</th>
+                <th>1300</th>
+                <th>1400</th>
+                <th>1500</th>
+                <th>1600</th>
+                <th>1700</th>
+                <th>1800</th>
+                <th>1900</th>
+                <th>2000</th>
+                <th>2100</th>
+                <th>2200</th>
+                <th>2300</th>
+
+    </tr>
+
+     <tr>
+        <th colspan="4" class="medCol">
+        <div class="hiddenMedID">
+            <p>{{_id}}</p>
+        </div>
+        <div class="row">
+        <b>{{name}}</b>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Dose:</label><p>{{dose}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Route:</label><p>{{route}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Frequency:</label><p>{{frequency}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>{{category}}</p>
+        </div>
+        <div class="row">
+            <div class="col s2">
+            <label>Remarks:</label><p>{{remarks}}</p>
+            </div>
+        </div>
+        </th>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+    </tr>
+    {{/ifCond}}
+    {{/each}}
+</table>
+      </div>  
+    </div>
+    {{!-- End of contents for discontinued Med Tab --}}
+</div>
+</div>
+
+<div id="OverlaySelection">
+    <div id="OverlayWindow">
+        <form id="medAdmForm" action="/student/add-med-adm" method="POST">
+            <div class="row" id="admTypeSelection">
+            <label><input type="radio" id="Administered" name="admType" value="A" checked><span>Administered</span> </label>
+
+            <label><input type="radio" id="Due" name="admType" value="Due"><span>Due</span> </label>
+
+            <label><input type="radio" id="Overdue" name="admType" value="OD"><span>Overdue</span> </label>
+
+            <label><input type="radio" id="Omitted" name="admType" value="M"><span>Omitted</span> </label>
+
+            <label><input type="radio" id="Exception" name="admType" value="E"><span>Exception</span> </label>
+            </div>
+            <hr>
+            <div id="staticForm">
+
+            </div>
+
+            <div id="dynamicForm">
+                <div class="row">
+                    <span>Administered by: </span><input type="text" id="admAdmBy" name="admAdmBy" value="">
+                </div>
+                <div class="row">
+                    <span>Cosigned by: </span><input type="text" id="admCosBy" name="admCosBy" value="">
+                </div>
+            </div>
+
+            <div class="row" id="formClosure">
+
+                <div class="col s2"><a style="margin-left: 10px" class="waves-effect waves-light btn-small" onclick="closeOverlay();">Cancel</a></div>
+                <div class="col s2"><button type="submit" style="margin-left: 10px" class="waves-effect waves-light btn-small">Save<i class="material-icons right">send</i></button></div>
+                <div id="admdeleteButton" class="col s2 offset- s6"></div>
+                {{!-- {{#forEach medAdmin}}
+                {{#if medAdmin.createdByMaster === '1'}} --}}
+                {{!-- {{else}} --}}
+                {{!-- <div class="col s2"><a style="margin-left: 10px" class="waves-effect waves-light btn-small" onclick="closeOverlay();">Cancel</a></div>
+                <div class="col s2"><button type="submit" style="margin-left: 10px" class="waves-effect waves-light btn-small" >Save<i class="material-icons right">send</i></button></div> --}}
+                {{!-- {{/if}}
+                {{/forEach}} --}}
+            </div>
+            
+        
+        </form>
+    </div>
+    
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        const admCaseDatas = document.querySelectorAll("div[class=admCaseHidden]");
+        const medIds = document.querySelectorAll("div[class=hiddenMedID]")
+
+        admCaseDatas.forEach(admCaseData =>{
+            var targetmedID = admCaseData.children[0].innerHTML;
+            var targetdate = admCaseData.children[2].innerHTML;
+            var targettime = admCaseData.children[3].innerHTML;
+            var overdueTime = admCaseData.children[5].innerHTML;
+            var remarks = admCaseData.children[4].innerHTML;
+            var timelist = targettime.toString().split("");
+            var targethour = timelist[0] + timelist[1];
+            var adminBy = admCaseData.children[6].innerHTML;
+            var cosignBy = admCaseData.children[7].innerHTML;
+            var type = admCaseData.children[1].innerHTML;
+            var targetID = admCaseData.children[8].innerHTML;
+            var table = document.getElementById("MARMasterTable");
+            var trows = table.children[0].children;
+            var daterow = trows[0].children;
+            var timerow = trows[1].children;
+            var column = 0;
+            var row = 0;
+            for(i=1; i < daterow.length; i++ ){
+                if(daterow[i].innerHTML == targetdate){
+                    var timemax = i * 24;
+                    var timemin = timemax - 23;
+                    for(j = timemin; j <= timemax; j++ ){
+                        var timedata = timerow[j].innerHTML.toString();
+                        let timesplit = timedata.split("");
+                        var hoursplit = timesplit[0] + timesplit[1];
+                        if(hoursplit == targethour){
+                            column = j;
+                            break
+                        }
+                    }
+                    break
+                }                                                                                                                                                                                                     
+            }
+            for(i=0; i < medIds.length; i++ ){
+              if(medIds[i].children[0].innerHTML == targetmedID){
+                var medrow = medIds[i].parentElement.parentElement;
+                row = medrow.rowIndex;
+              }
+            
+            }
+            var targetrow = trows[row].children;
+            var targetcell = targetrow[column];
+            if(type == 'A'){
+                targetcell.innerHTML = '<div class="hiddenCaseData">' + '<span>' + targetID +'</span>'+ '<span>'+ adminBy +'</span>' + '<span>'+ cosignBy +'</span>'
+                    +'</div>' + '<div class="administeredBox"> <div class="row"><span>' + targettime +'</span></div> <div class="row"><span>' + type +'</span></div></div>'
+
+            }else if(type == 'Due'){
+                targetcell.innerHTML =  '<div class="hiddenCaseData">' + '<span>' + targetID +'</span>' +'</div>'
+                    + '<div class="dueBox"><div class="row"><span>' + targettime +'</span></div><div class="row"><span>' + type +'</span></div></div>'
+            }else if(type == 'OD'){
+                targetcell.innerHTML =  '<div class="hiddenCaseData">' + '<span>' + targetID +'</span>'+ '<span>'+ overdueTime +'</span>' + '<span>'+ remarks +'</span>'
+                    +'</div>' + '<div class="overdueBox"><div class="row"><span>' + targettime +'</span></div><div class="row"><span>' + type +'</span></div></div>'
+            }else if(type == 'M'){
+                targetcell.innerHTML =  '<div class="hiddenCaseData">' + '<span>' + targetID + '</span><span>'+ remarks +'</span>'
+                    +'</div>' + '<div class="omittedBox"><div class="row"><span>' + targettime +'</span></div> <div class="row"><span>' + type +'</span></div></div>'
+            }else if(type == 'E'){
+                targetcell.innerHTML =  '<div class="hiddenCaseData">' + '<span>' + targetID + '</span><span>'+ remarks +'</span>'
+                    +'</div>' + '<div class="exceptionBox"><div class="row"><span>' + targettime +'</span></div> <div class="row"><span>' + type +'</span></div></div>'
+            }
+
+
+        })
+
+
+        const cells = document.querySelectorAll("td");
+
+        cells.forEach(cell =>{
+            cell.addEventListener("click", () =>{
+                var x = cell;
+                document.getElementById("OverlaySelection").style.display = "block";
+                var staticContainer = document.getElementById("staticForm");
+                var trows = document.getElementById("MARMasterTable").rows;
+                var timeslot = trows[1].cells[x.cellIndex];
+                var beforeRound = timeslot.cellIndex / 24;
+                var afterRound = Math.round(beforeRound);
+                if (afterRound < beforeRound){
+                    afterRound += 1;
+                }
+                var dateslot = trows[0].cells[afterRound];
+                var time = timeslot.innerHTML;
+                var hourAndMin = time.split('');
+                var hour = hourAndMin[0] + hourAndMin[1];
+                var min = hourAndMin[2] + hourAndMin[3];
+                var body = document.body;
+                var tRow = x.parentElement;
+                var cellRow = tRow.rowIndex;
+                var medcell = trows[cellRow].cells[0];
+                var medcellchildren = medcell.children;
+                var medcellchildId = medcellchildren[0]
+                var medcellchildIdRaw = medcellchildId.children[0].innerHTML
+                body.style.position = "fixed";
+
+                staticContainer.innerHTML = '<div class="row"><span>Date: </span><input type="text" id="admdate" name="admdate" value="' + dateslot.innerHTML +'" readonly></div>';
+
+                if (x.innerHTML == ""){
+                    var theForm = document.getElementById("medAdmForm");
+                    theForm.action = "/student/add-med-adm/" + medcellchildIdRaw;
+                    staticContainer.innerHTML += '<div class="row"> <span>Time: </span><input type="text" id="admtimehour" name="hour" value="'+ hour +'" readonly><input type="number" size="2" class="admtime" name="min" min="0" max="59" value="'+ min +'"></div>'
+
+                } else{
+
+                    var displayedData = cell.children[1];
+                    var hiddenData = cell.children[0];
+                    var hiddenID = hiddenData.children[0].innerHTML;
+                    var delButton = document.getElementById("admdeleteButton");
+                    delButton.innerHTML = '<a href="/student/delete-med-adm/'+ hiddenID +'" class="waves-effect btn-small red tooltipped" data-position="bottom" data-tooltip="Delete"><i class="material-icons white-text">delete</i></a>'
+
+                    var displayedTime = displayedData.children[0].children[0].innerHTML.toString();
+                    var displayedType = displayedData.children[1].children[0].innerHTML.toString();
+                    var splitTime = displayedTime.split("");
+                    var splitHour = splitTime[0] + splitTime[1];
+                    var splitmin = splitTime[2] + splitTime[3];
+                    staticContainer.innerHTML += '<div class="row"> <span>Time: </span><input type="text" id="admtimehour" name="hour" value="'+ splitHour +'" readonly><input type="number" size="2" class="admtime" name="min" min="0" max="59" value="'+ splitmin +'"></div>'
+                    if(displayedType == 'A'){
+                        document.getElementById('Administered').checked = true;
+                        document.getElementById("OverlayWindow").style.backgroundColor = "#079225";
+                        var container = document.getElementById("dynamicForm");
+                        var admby = hiddenData.children[1].innerHTML;
+                        var cosby = hiddenData.children[2].innerHTML;
+                        container.innerHTML ='<div class="row"><span>Administered by: </span><input type="text" id="admAdmBy" name="AdministeredBy" value="'+ admby +'"></div>';
+                        container.innerHTML +='<div class="row"><span>Cosigned by: </span><input type="text" id="admCosBy" name="CosignedBy" value="'+ cosby +'"></div>'
+
+                    }else if(displayedType == 'Due'){
+                        document.getElementById('Due').checked = true;
+                        document.getElementById("OverlayWindow").style.backgroundColor = "#36a3cf";
+                        var container = document.getElementById("dynamicForm");
+                        //Check Medication Id
+                        container.innerHTML =
+                        '<div class="row"><span>Enter medication ID: </span><input type="text" id="medicationID" name="medicationID" placeholder="SF27" list="druglist"><datalist id="druglist">{{#if druglist}}{{#each druglist}}<option value="{{barcodeId}}">{{/each}}{{else}}<option value="None"></option>{{/if}}</datalist><button type="button" onclick="checkMedInput()" class="btn btn-info">Check Medication</button><div class="circle-loader" style="display: none;"><div class="checkmark draw"></div></div></div><div id="validateMedID" style="color: red;"></div>';
+                        //Check Patient Id
+                        container.innerHTML +=  '<div class="row" id="hidePID"><span>Enter patient ID: </span><input type="text" id="chkPatientID" name="chkPatientID" placeholder="S1234567H"/><button type="button" onclick="checkPatientInput()" class="btn btn-info">Check Patient</button><div class="circle-loader2" style="display: none;"><div class="checkmark draw"></div></div></div><div id="validatePatientID" style="color: red;"></div>';
+                        //Administer button
+                        container.innerHTML += '<button type="button" id="administerBtn" class="btn btn-success" onclick="administerRoute()">Administer</button>';
+                        //Administer By and Cosign By
+                        container.innerHTML +='<div class="row" id="AdminBy"><span>Administered by: </span><input type="text" id="admAdmBy" name="admAdmBy" value="{{retrieveSPatient.creator}}"></div>';
+                        container.innerHTML +='<div class="row" id="CosignBy"><span>Cosigned by: </span><input type="text" id="admCosBy" name="admCosBy" value=""></div>';
+                        // hiding patient div statement
+                        document.getElementById("hidePID").style.display = "none";
+                        // hiding administer button
+                        document.getElementById("administerBtn").style.display = "none";
+                        //hiding administered by and cosigned by
+                        document.getElementById("AdminBy").style.display = "none";
+                        document.getElementById("CosignBy").style.display = "none";
+
+                    }else if(displayedType == 'OD'){
+                        document.getElementById('Overdue').checked = true;
+                        document.getElementById("OverlayWindow").style.backgroundColor = "#e33636";
+                        var container = document.getElementById("dynamicForm");
+                        var hiddentime = hiddenData.children[1].innerHTML.toString();
+                        var hiddenRemarks = hiddenData.children[2].innerHTML.toString();
+                        var hiddentimesplit = hiddentime.split("");
+                        var hiddenhour = hiddentimesplit[0] + hiddentimesplit[1];
+                        var hiddenmin = hiddentimesplit[2] + hiddentimesplit[3];
+                        container.innerHTML= '<div class="row"><span>Time that administration was overdued till: </span><input type="number" class="admtime" min="00" max="23"name="admOverduetimehour" size="2" value="' + hiddenhour + '" min="'+ splitHour +'" max="23" ><input type="number" class="admtime" size="2" name="admOverduetimemin" min="0" max="59" value="' + hiddenmin + '"></div>'
+                        container.innerHTML +='<div class="row"><span>Reason for Overdue: </span><input type="text" id="admRemarks" name="admremarks" value="'+ hiddenRemarks +'" placeholder="Only leave a reason when creating history"></div>';
+
+                    }else if(displayedType == 'M'){
+                        document.getElementById('Omitted').checked = true;
+                        document.getElementById("OverlayWindow").style.backgroundColor = "#d69511";
+                        var container = document.getElementById("dynamicForm");
+                        var hiddenRemarks = hiddenData.children[1].innerHTML.toString();
+                        container.innerHTML ='<span>Reason for Omission: </span><input type="text" id="admRemarks" name="admremarks" value="'+ hiddenRemarks +'">';
+
+                    }else if(displayedType == 'E'){
+                        document.getElementById('Exception').checked = true;
+                        document.getElementById("OverlayWindow").style.backgroundColor = "#9400D3";
+                        var container = document.getElementById("dynamicForm");
+                        var hiddenRemarks = hiddenData.children[1].innerHTML.toString();
+                        container.innerHTML ='<span>Reason for Exceptions: </span><input type="text" id="admRemarks" name="admremarks" value="'+ hiddenRemarks +'">';
+
+                    }
+                    
+                    var theForm = document.getElementById("medAdmForm");
+                    theForm.action = "/student/edit-med-adm/" + hiddenID;
+                }
+                
+            })
+        })
+
+        const rads = document.querySelectorAll("input[type=radio]");
+
+        rads.forEach(rad =>{
+            rad.addEventListener("change", () =>{
+                var y = rad.id;
+                if(y == "Administered"){
+                    var container = document.getElementById("dynamicForm");
+                    var backgroundco = document.getElementById("OverlayWindow");
+                    backgroundco.style.backgroundColor = "#079225";
+                    container.innerHTML ='<div class="row"><span>Administered by: </span><input type="text" id="admAdmBy" name="admAdmBy" value=""></div>';
+                    container.innerHTML +='<div class="row"><span>Cosigned by: </span><input type="text" id="admCosBy" name="admCosBy" value=""></div>';
+
+                } else if (y == "Due") {
+                    var container = document.getElementById("dynamicForm");
+                    var backgroundco = document.getElementById("OverlayWindow");
+                    backgroundco.style.backgroundColor = "#36a3cf";
+                    container.innerHTML = '';
+
+
+                }else if(y == "Overdue"){
+                    var container = document.getElementById("dynamicForm");
+                    var backgroundco = document.getElementById("OverlayWindow");
+                    backgroundco.style.backgroundColor = "#e33636";
+                    var timehour = parseInt(document.getElementById("admtimehour").value) + 1;
+                    var timehourtext = '0' + timehour.toString();
+                    container.innerHTML= '<div class="row"><span>Time that administration was overdued till: </span><input type="number" class="admtime" min="00" max="23"name="admOverduetimehour" size="2" value="' + timehourtext + '" min="'+ timehour +'" max="23" ><input type="number" class="admtime" size="2" name="admOverduetimemin" min="0" max="59" value="00"></div>'
+                    container.innerHTML +='<div class="row"><span>Reason for Overdue: </span><input type="text" id="admRemarks" name="admremarks" value="" placeholder="Only leave a reason when creating history"></div>';
+
+
+                }else if(y == "Omitted"){
+                    var container = document.getElementById("dynamicForm");
+                    var backgroundco = document.getElementById("OverlayWindow");
+                    backgroundco.style.backgroundColor = "#d69511";
+                    container.innerHTML ='<span>Reason for Omission: </span><input type="text" id="admRemarks" name="admremarks" value="Patient is NBM">';
+
+                }else if(y == "Exception"){
+                    var container = document.getElementById("dynamicForm");
+                    var backgroundco = document.getElementById("OverlayWindow");
+                    backgroundco.style.backgroundColor = "#9400D3";
+                    container.innerHTML ='<span>Reason for Exception: </span><input type="text" id="admRemarks" name="admremarks" value="Patient is NBM">';
+
+                }
+            })
+        })
+
+// doesn't work( tried to make single digits always have 0 infront of them)
+//        const timeinputs = document.querySelectorAll("input[type=number]")
+//        timeinputs.forEach(timeinput =>{
+//            timeinput.addEventListener("input", () =>{
+//                console.log("typing..");
+                // Always 2 digits
+//                if (timeinput.value.length >= 2){
+//                    timeinput.value = timeinput.value.slice(0, 2);
+//                };
+//                // 0 on the left (doesn't work on FF)
+//                if (timeinput.value.length == 1){
+//                    timeinput.value = '0' + timeinput.value;
+//                };
+                // Avoiding letters on FF
+//                if (!timeinput.value){
+//                    timeinput.value = '00';
+//                };
+//            });
+//        });
+
+    });
+
+    function closeOverlay(){
+        document.getElementById("OverlaySelection").style.display = "none";
+        document.getElementById("Administered").checked = true;
+        var container = document.getElementById("dynamicForm");
+        var backgroundco = document.getElementById("OverlayWindow");
+        backgroundco.style.backgroundColor = "#079225";
+        container.innerHTML ='<div class="row"><span>Administered by: </span><input type="text" id="admAdmBy" name="AdministeredBy" value="{{retrieveSPatient.creator}}"></div>';
+        container.innerHTML +='<div class="row"><span>Cosigned by: </span><input type="text" id="admCosBy" name="CosignedBy" value=""></div>'
+        var body = document.body;
+        body.style.position = "static";
+    };
+        
+    function checkMedInput() {
+        if (document.getElementById("medicationID").value == "") {
+            document.getElementById("validateMedID").innerHTML = "Your ID cannot be empty!"
+        } else {
+            $('.circle-loader').toggle()
+            //label will disappear if user key in wrong value before the correct value is inserted
+            document.getElementById("validateMedID").innerHTML = "";
+            {{#each marMedication}}
+            if (document.getElementById("medicationID").value == "{{barcodeId}}") {
+                $('.circle-loader').toggleClass('load-complete');
+                $('.checkmark').toggle();
+                document.getElementById("hidePID").style.display = "block";
+            }
+            else{
+                document.getElementById("validateMedID").innerHTML = "You have inserted the wrong medication!"
+            }
+            {{/each}}
+        }
+    }
+
+    function checkPatientInput() {
+        if (document.getElementById("chkPatientID").value == "") {
+            document.getElementById("validatePatientID").innerHTML = "Your ID cannot be empty!"
+        } else {
+            $('.circle-loader2').toggle()
+            //label will disappear if user key in wrong value before the correct value is inserted
+            document.getElementById("validatePatientID").innerHTML = "";
+
+
+            if (document.getElementById("chkPatientID").value == "{{retrieveSPatient.nric}}") {
+                $('.circle-loader2').toggleClass('load-complete2');
+                $('.checkmark2').toggle();
+                document.getElementById("administerBtn").style.display = "block";
+            }
+            else{
+                document.getElementById("validatePatientID").innerHTML = "You have entered the wrong patient ID!"
+            }
+
+        }
+    }
+
+    function administerRoute() {
+        document.getElementById("AdminBy").style.display = "block";
+        document.getElementById("CosignBy").style.display = "block";
+    }
+</script>

@@ -1,0 +1,214 @@
+
+<div class="row">
+<div class="col s12" >
+	<ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#upload">Import Student List</a></li>
+		<li class="tab col s3"><a href="#studentList">Student List</a></li>
+	</ul>
+</div>
+</div>
+
+<div class="card grey lighten-4" id="#">
+	<div class="card-content" style="padding: 0px 24px;">
+		
+
+        <div id="upload" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Import Student List (Excel File)</span>
+            <br>
+            <span class="blue-text darken-3">For upload to be successful, Excel file need to be named as "student list" inside a folder named as "studentList" inside C drive</span>
+            <br>
+			<div class="row">
+                <form action="/master/uploadStudentExcelFile" id="form1" enctype="multipart/form-data" method="POST"> 
+                    <div class="col s4">
+                            <div class="file-field input-field">
+                                <div class="btn-small waves-effect waves-light">
+                                    <span>File</span>
+                                    <input type="file" name="myFile" required>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" id="file-text" type="text">
+                                    <label for="file-text">Upload will take a few moments to complete</label>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col s2">
+                        <br>
+                        <!-- Modal Trigger -->
+                        <a class="waves-effect waves-light btn btn-small blue modal-trigger" href="#modal1" id="uploadbtn">Upload</a>
+                    </div>
+
+                    <!-- Modal Structure -->
+                    <div id="modal1" class="modal">
+                        <div class="modal-content">
+                        <h4>Confirm Upload</h4>
+                        <p>Upload will overwrite all existing student List</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="modal-close btn blue btn-small waves-effect waves-light">Cancel</button>
+                            <button type="submit" class="modal-close btn btn-small waves-effect waves-light" form="form1">Upload</button>
+                        </div>
+                    </div>
+
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card blue lighten-5" id="studentList">
+	<div class="card-content" style="padding: 0px 24px;">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Student List</span>
+            {{#if studentList}}
+                <table id="studentTable" class="striped compact">
+                    <thead>
+                        <tr>
+                            <th>
+                                Module Code
+                            </th>
+                            <th>
+                                Module Group
+                            </th>
+                            {{!-- <th>
+                                School Code
+                            </th>
+                            <th>
+                                Acad/Yr Intake
+                            </th>
+                            <th>
+                                Semester
+                            </th>
+                            <th>
+                                Tutorial/Mentor Group
+                            </th> --}}
+                            <th>
+                                Admin Number
+                            </th>
+                            <th>
+                                Student Name
+                            </th>
+                            <th>
+                                Student Email
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                {{#each studentList}}
+                    <tr style="height: 50px">
+					<td>
+						{{studmoduleCode}}
+					</td>
+					<td>
+						{{studmoduleGroup}}
+					</td>
+					{{!-- <td>
+						{{schoolCode}}
+					</td>
+                    <td>
+						{{studacadyearIntake}}
+					</td>
+                    <td>
+						{{sem}}
+					</td>
+                    <td>
+						{{studtutMentorGrp}}
+					</td> --}}
+                    <td>
+						{{studadmNo}}
+					</td>
+                    <td>
+						{{studName}}
+					</td>
+                    <td>
+						{{studemail}}
+					</td>
+				</tr>
+                {{/each}}
+                </tbody>
+                </table>
+            {{else}}
+            <a href="/master/student-list" class="btn-small waves-effect waves-light">Upload Student List</a>
+            {{/if}}
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    $('.tabs').tabs();
+    var elems = document.querySelectorAll('select');
+    var modalElems = document.querySelectorAll('.modal');
+    var modalInstances = M.Modal.init(modalElems);
+
+    var options = document.querySelectorAll('option');
+    var instances = M.FormSelect.init(elems, options);
+
+    var elems2 = document.querySelectorAll('.autocomplete');
+    var instances2 = M.Autocomplete.init(elems2, options);
+    
+
+    $('#studentTable').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "order": [[ 0, "asc" ]],
+        "dom": 'Bfrtip',
+        "buttons": [
+            {'extend': 'excel',
+			'title': "student-list"
+			}, 
+			{'extend':'pdf',
+			'title': "student-list"
+			}
+        ],
+    });
+
+    $(".buttons-excel").addClass("btn btn-small waves-light");
+	$(".buttons-pdf").addClass("btn btn-small red waves-light");
+
+
+    $(document).ready(function(){
+    {{!-- $('input.autocomplete').autocomplete({
+        data: {
+        "Apple": null,
+        "Microsoft": null,
+        "Google": null
+        },
+        }); --}}
+
+        //disabling upload button if no mod code is selected
+        //not needed at the moment
+        {{!-- $('#uploadbtn').attr('disabled', true);
+        $('#modcodeinput').keyup(function(){
+            if($(this).val().length != 0){
+                $('#uploadbtn').attr('disabled', false);
+            }else{
+                $('#uploadbtn').attr('disabled', true);
+            }
+        }); --}}
+    });
+
+    
+});
+
+
+
+
+{{#if studentList}}
+paceOptions = {
+    ajax: false, // disabled
+    document: true,
+    eventLag: false, // disabled
+    elements: {
+        selectors: [ '#studentTable']
+    }
+};
+{{/if}}
+
+</script>
+
+<script src="/assets/pace/pace.min.js"></script>
